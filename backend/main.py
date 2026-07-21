@@ -14,7 +14,7 @@ app = FastAPI(title="VEINZ API")
 
 allowed_origins = [
     "http://localhost:3000",
-    "https://sail-kohl.vercel.app/",
+    "https://sail-kohl.vercel.app",
 ]
 
 app.add_middleware(
