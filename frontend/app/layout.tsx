@@ -4,8 +4,8 @@ import "./globals.css";
 import RegisterSW from "@/components/RegisterSW";
 
 export const metadata: Metadata = {
-  title: "VEINZ — Vein Visualizer",
-  description: "Near-infrared vein visualization and mapping",
+  title: "VEINZ",
+  description: "veinzz",
   appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "VEINZ" },
 };
 
