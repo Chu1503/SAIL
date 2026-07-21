@@ -10,15 +10,20 @@ from preprocessing import enhance
 from model import predict
 from overlay import make_overlay
 
-app = FastAPI(title="SAIL v2 API")
+app = FastAPI(title="VEINZ API")
+
+allowed_origins = [
+    "http://localhost:3000",
+    "https://sail-kohl.vercel.app/",
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 def _to_data_url(img):
     ok, buf = cv2.imencode(".png", img)
