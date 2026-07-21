@@ -1,6 +1,8 @@
 // Web app manifest: makes the site installable as a PWA (name, icons, colors, display mode).
 import type { MetadataRoute } from "next";
 
+export const dynamic = "force-static";
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "VEINZ — Vein Visualizer",

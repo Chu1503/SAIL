@@ -3,7 +3,7 @@ import base64
 
 import cv2
 import numpy as np
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from preprocessing import enhance
@@ -14,6 +14,9 @@ app = FastAPI(title="VEINZ API")
 
 allowed_origins = [
     "http://localhost:3000",
+    "https://localhost",
+    "http://localhost",
+    "capacitor://localhost",
     "https://sail-kohl.vercel.app",
 ]
 
@@ -42,7 +45,10 @@ async def process(file: UploadFile = File(...)):
     arr = np.frombuffer(data, np.uint8)
     img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
     if img is None:
-        return {"error": "Could not decode image"}
+        raise HTTPException(
+            status_code=400,
+            detail="Could not decode uploaded image",
+        )
 
     original, detection_base, display_base = enhance(img)
     mask = predict(detection_base)

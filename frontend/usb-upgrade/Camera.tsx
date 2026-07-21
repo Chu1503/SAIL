@@ -20,12 +20,6 @@ type UsbResult = {
 export default function Camera({ onCapture, onCancel }: Props) {
   const native = Capacitor.isNativePlatform();
 
-  //
-  console.log("Capacitor platform:", Capacitor.getPlatform());
-  console.log("Native platform:", native);
-  console.log("UsbCamera plugin available:", Capacitor.isPluginAvailable("UsbCamera"));
-  //
-
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
@@ -47,15 +41,9 @@ export default function Camera({ onCapture, onCancel }: Props) {
       } else {
         setError("Couldn't capture from the USB camera.");
       }
-    } catch (err) {
-  const message =
-    err instanceof Error
-      ? `${err.name}: ${err.message}`
-      : JSON.stringify(err);
-
-  console.error("USB CAMERA EXCEPTION:", err);
-  setError(`USB camera error: ${message}`);
-}
+    } catch {
+      setError("USB camera error. Make sure the camera is connected and allowed.");
+    }
   }, [onCapture, onCancel]);
 
   const start = useCallback(async (selectedId?: string) => {
@@ -120,9 +108,6 @@ export default function Camera({ onCapture, onCancel }: Props) {
       <div className="flex flex-col items-center rounded-3xl border border-white/10 bg-white/[0.02] px-6 py-16 text-center">
         {error ? (
           <>
-            <p className="mt-3 text-xs text-neutral-500">
-              Platform: {Capacitor.getPlatform()} | Plugin:{" "}{String(Capacitor.isPluginAvailable("UsbCamera"))}
-            </p>
             <p className="text-sm text-red-400">{error}</p>
             <div className="mt-6 flex justify-center gap-3">
               <button onClick={onCancel} className={btnGhost}>Back</button>

@@ -1,0 +1,1494 @@
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build.gradle b/node_modules/@periksa/cap-usb-camera/android/build.gradle
+index 823a810..33fe23b 100644
+--- a/node_modules/@periksa/cap-usb-camera/android/build.gradle
++++ b/node_modules/@periksa/cap-usb-camera/android/build.gradle
+@@ -18,6 +18,7 @@ buildscript {
+ apply plugin: 'com.android.library'
+ 
+ android {
++    namespace "id.periksa.plugins.usbcamera"
+     ndkVersion '22.1.7171670'
+     compileSdkVersion project.hasProperty('compileSdkVersion') ? rootProject.ext.compileSdkVersion : 28
+     defaultConfig {
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/017697290cf6ba92174b42ff8776ca14/results.bin b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/017697290cf6ba92174b42ff8776ca14/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/017697290cf6ba92174b42ff8776ca14/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/017697290cf6ba92174b42ff8776ca14/transformed/classes/classes_dex/classes.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/017697290cf6ba92174b42ff8776ca14/transformed/classes/classes_dex/classes.dex
+new file mode 100644
+index 0000000..fe77194
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/017697290cf6ba92174b42ff8776ca14/transformed/classes/classes_dex/classes.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/results.bin b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/results.bin
+new file mode 100644
+index 0000000..7ed749e
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/results.bin
+@@ -0,0 +1 @@
++o/bundleLibRuntimeToDirDebug
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseActivity$1.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseActivity$1.dex
+new file mode 100644
+index 0000000..9c06342
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseActivity$1.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseActivity$ShowToastTask.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseActivity$ShowToastTask.dex
+new file mode 100644
+index 0000000..b9fc23f
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseActivity$ShowToastTask.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseActivity.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseActivity.dex
+new file mode 100644
+index 0000000..d6e3733
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseActivity.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseFragment$1.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseFragment$1.dex
+new file mode 100644
+index 0000000..ef33c13
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseFragment$1.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseFragment$ShowToastTask.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseFragment$ShowToastTask.dex
+new file mode 100644
+index 0000000..442f1d5
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseFragment$ShowToastTask.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseFragment.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseFragment.dex
+new file mode 100644
+index 0000000..6a8713a
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseFragment.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseService.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseService.dex
+new file mode 100644
+index 0000000..23b52c7
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/common/BaseService.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/IAudioEncoder.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/IAudioEncoder.dex
+new file mode 100644
+index 0000000..8dbdf65
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/IAudioEncoder.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/IVideoEncoder.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/IVideoEncoder.dex
+new file mode 100644
+index 0000000..fd5f1c2
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/IVideoEncoder.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaAudioEncoder$1.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaAudioEncoder$1.dex
+new file mode 100644
+index 0000000..8218684
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaAudioEncoder$1.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaAudioEncoder$AudioThread.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaAudioEncoder$AudioThread.dex
+new file mode 100644
+index 0000000..b5529c8
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaAudioEncoder$AudioThread.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaAudioEncoder.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaAudioEncoder.dex
+new file mode 100644
+index 0000000..d945a8b
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaAudioEncoder.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaEncoder$MediaEncoderListener.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaEncoder$MediaEncoderListener.dex
+new file mode 100644
+index 0000000..e71f767
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaEncoder$MediaEncoderListener.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaEncoder.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaEncoder.dex
+new file mode 100644
+index 0000000..af8cc9f
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaEncoder.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaMuxerWrapper.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaMuxerWrapper.dex
+new file mode 100644
+index 0000000..c6c29e4
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaMuxerWrapper.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaSurfaceEncoder.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaSurfaceEncoder.dex
+new file mode 100644
+index 0000000..d154338
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaSurfaceEncoder.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaVideoBufferEncoder.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaVideoBufferEncoder.dex
+new file mode 100644
+index 0000000..faf1ed7
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaVideoBufferEncoder.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaVideoEncoder.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaVideoEncoder.dex
+new file mode 100644
+index 0000000..bcb59ab
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/encoder/MediaVideoEncoder.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog$1.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog$1.dex
+new file mode 100644
+index 0000000..03094f7
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog$1.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog$2.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog$2.dex
+new file mode 100644
+index 0000000..a880a8f
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog$2.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog$CameraDialogParent.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog$CameraDialogParent.dex
+new file mode 100644
+index 0000000..47159d0
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog$CameraDialogParent.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog$DeviceListAdapter.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog$DeviceListAdapter.dex
+new file mode 100644
+index 0000000..38a634e
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog$DeviceListAdapter.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog.dex
+new file mode 100644
+index 0000000..d064dae
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/CameraDialog.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/IButtonCallback.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/IButtonCallback.dex
+new file mode 100644
+index 0000000..f2eec92
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/IButtonCallback.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/IFrameCallback.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/IFrameCallback.dex
+new file mode 100644
+index 0000000..3ed355d
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/IFrameCallback.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/IStatusCallback.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/IStatusCallback.dex
+new file mode 100644
+index 0000000..06ea32c
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/IStatusCallback.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraDeviceFilter.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraDeviceFilter.dex
+new file mode 100644
+index 0000000..67e6db7
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraDeviceFilter.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$1.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$1.dex
+new file mode 100644
+index 0000000..694ca69
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$1.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2$1.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2$1.dex
+new file mode 100644
+index 0000000..8e80024
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2$1.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2.dex
+new file mode 100644
+index 0000000..078d48b
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$3.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$3.dex
+new file mode 100644
+index 0000000..a50e9c4
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$3.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$4.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$4.dex
+new file mode 100644
+index 0000000..2662ed2
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$4.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$5.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$5.dex
+new file mode 100644
+index 0000000..ca3b4ca
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$5.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$6.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$6.dex
+new file mode 100644
+index 0000000..8d77772
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$6.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$OnDeviceConnectListener.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$OnDeviceConnectListener.dex
+new file mode 100644
+index 0000000..b9d529f
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$OnDeviceConnectListener.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbControlBlock.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbControlBlock.dex
+new file mode 100644
+index 0000000..17ec91d
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbControlBlock.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbDeviceInfo.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbDeviceInfo.dex
+new file mode 100644
+index 0000000..a27db59
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbDeviceInfo.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor.dex
+new file mode 100644
+index 0000000..7218d4d
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/Size$1.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/Size$1.dex
+new file mode 100644
+index 0000000..c491407
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/Size$1.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/Size.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/Size.dex
+new file mode 100644
+index 0000000..0d13aba
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/Size.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/USBVendorId.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/USBVendorId.dex
+new file mode 100644
+index 0000000..f85e48e
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/USBVendorId.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/UVCCamera.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/UVCCamera.dex
+new file mode 100644
+index 0000000..12b036a
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usb_libuvccamera/UVCCamera.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraCallback.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraCallback.dex
+new file mode 100644
+index 0000000..e22b9ab
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraCallback.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$1.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$1.dex
+new file mode 100644
+index 0000000..55bc113
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$1.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$2.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$2.dex
+new file mode 100644
+index 0000000..9004717
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$2.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread.dex
+new file mode 100644
+index 0000000..dbaa028
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler.dex
+new file mode 100644
+index 0000000..2999f74
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/UVCCameraHandler.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/UVCCameraHandler.dex
+new file mode 100644
+index 0000000..83b2b4c
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/UVCCameraHandler.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface$1.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface$1.dex
+new file mode 100644
+index 0000000..052a538
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface$1.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface.dex
+new file mode 100644
+index 0000000..98e0483
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/AspectRatioTextureView.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/AspectRatioTextureView.dex
+new file mode 100644
+index 0000000..060c391
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/AspectRatioTextureView.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/CameraViewInterface$Callback.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/CameraViewInterface$Callback.dex
+new file mode 100644
+index 0000000..c00f9b5
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/CameraViewInterface$Callback.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/CameraViewInterface.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/CameraViewInterface.dex
+new file mode 100644
+index 0000000..1d416ec
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/CameraViewInterface.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/UVCCameraTextureView$1.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/UVCCameraTextureView$1.dex
+new file mode 100644
+index 0000000..e637ada
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/UVCCameraTextureView$1.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/UVCCameraTextureView$RenderHandler$RenderThread.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/UVCCameraTextureView$RenderHandler$RenderThread.dex
+new file mode 100644
+index 0000000..3929603
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/UVCCameraTextureView$RenderHandler$RenderThread.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/UVCCameraTextureView$RenderHandler.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/UVCCameraTextureView$RenderHandler.dex
+new file mode 100644
+index 0000000..1a89e86
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/UVCCameraTextureView$RenderHandler.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/UVCCameraTextureView.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/UVCCameraTextureView.dex
+new file mode 100644
+index 0000000..c21d76c
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/serenegiant/widget/UVCCameraTextureView.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$1$1.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$1$1.dex
+new file mode 100644
+index 0000000..6af5bf8
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$1$1.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$1.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$1.dex
+new file mode 100644
+index 0000000..2667443
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$1.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$2.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$2.dex
+new file mode 100644
+index 0000000..9a68096
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$2.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$3.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$3.dex
+new file mode 100644
+index 0000000..4f1364d
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$3.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$4.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$4.dex
+new file mode 100644
+index 0000000..8233cd9
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity$4.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity.dex
+new file mode 100644
+index 0000000..d18e0b0
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/USBCameraActivity.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/UsbCamera.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/UsbCamera.dex
+new file mode 100644
+index 0000000..551ca89
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/UsbCamera.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/UsbCameraPlugin.dex b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/UsbCameraPlugin.dex
+new file mode 100644
+index 0000000..441389b
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/id/periksa/plugins/usbcamera/UsbCameraPlugin.dex differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin
+new file mode 100644
+index 0000000..601f245
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/.transforms/b1230f72b080fb5355216a479bba6218/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+new file mode 100644
+index 0000000..4decf4b
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+@@ -0,0 +1,23 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="id.periksa.plugins.usbcamera" >
++
++    <uses-sdk android:minSdkVersion="24" />
++
++    <uses-permission android:name="android.permission.CAMERA" />
++    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
++    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
++
++    <uses-feature
++        android:glEsVersion="0x00020000"
++        android:required="true" />
++
++    <application>
++        <activity
++            android:name="id.periksa.plugins.usbcamera.USBCameraActivity"
++            android:configChanges="orientation"
++            android:screenOrientation="portrait"
++            android:theme="@style/Theme.AppCompat.NoActionBar" />
++    </application>
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+new file mode 100644
+index 0000000..e85dfec
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+@@ -0,0 +1,18 @@
++{
++  "version": 3,
++  "artifactType": {
++    "type": "AAPT_FRIENDLY_MERGED_MANIFESTS",
++    "kind": "Directory"
++  },
++  "applicationId": "id.periksa.plugins.usbcamera",
++  "variantName": "debug",
++  "elements": [
++    {
++      "type": "SINGLE",
++      "filters": [],
++      "attributes": [],
++      "outputFile": "AndroidManifest.xml"
++    }
++  ],
++  "elementType": "File"
++}
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+new file mode 100644
+index 0000000..1211b1e
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+@@ -0,0 +1,6 @@
++aarFormatVersion=1.0
++aarMetadataVersion=1.0
++minCompileSdk=1
++minCompileSdkExtension=0
++minAndroidGradlePluginVersion=1.0.0
++coreLibraryDesugaringEnabled=false
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+new file mode 100644
+index 0000000..9e26dfe
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+@@ -0,0 +1 @@
++{}
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar
+new file mode 100644
+index 0000000..95ded5e
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar
+new file mode 100644
+index 0000000..dc11272
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt
+new file mode 100644
+index 0000000..39810c5
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt
+@@ -0,0 +1,22 @@
++int dimen button_size 0x0
++int dimen horizontal_margin 0x0
++int dimen list_font_size 0x0
++int dimen list_height_min 0x0
++int dimen vertical_margin 0x0
++int id LinearLayout1 0x0
++int id btn_cancel 0x0
++int id btn_capture 0x0
++int id camera_view 0x0
++int id name_text 0x0
++int id spinner1 0x0
++int id textView1 0x0
++int layout activity_usbcamera 0x0
++int layout dialog_camera 0x0
++int layout listitem_device 0x0
++int string app_name 0x0
++int string camera 0x0
++int string cancel 0x0
++int string no_device 0x0
++int string refresh 0x0
++int string select 0x0
++int xml device_filter 0x0
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compiled_local_resources/debug/compileDebugLibraryResources/out/layout_activity_usbcamera.xml.flat b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compiled_local_resources/debug/compileDebugLibraryResources/out/layout_activity_usbcamera.xml.flat
+new file mode 100644
+index 0000000..ad99510
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compiled_local_resources/debug/compileDebugLibraryResources/out/layout_activity_usbcamera.xml.flat differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compiled_local_resources/debug/compileDebugLibraryResources/out/layout_dialog_camera.xml.flat b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compiled_local_resources/debug/compileDebugLibraryResources/out/layout_dialog_camera.xml.flat
+new file mode 100644
+index 0000000..4347266
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compiled_local_resources/debug/compileDebugLibraryResources/out/layout_dialog_camera.xml.flat differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compiled_local_resources/debug/compileDebugLibraryResources/out/layout_listitem_device.xml.flat b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compiled_local_resources/debug/compileDebugLibraryResources/out/layout_listitem_device.xml.flat
+new file mode 100644
+index 0000000..639b78a
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compiled_local_resources/debug/compileDebugLibraryResources/out/layout_listitem_device.xml.flat differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compiled_local_resources/debug/compileDebugLibraryResources/out/xml_device_filter.xml.flat b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compiled_local_resources/debug/compileDebugLibraryResources/out/xml_device_filter.xml.flat
+new file mode 100644
+index 0000000..a4d08fe
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/compiled_local_resources/debug/compileDebugLibraryResources/out/xml_device_filter.xml.flat differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+new file mode 100644
+index 0000000..e2b12db
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+@@ -0,0 +1,5 @@
++#Tue Jul 21 08:43:14 CDT 2026
++id.periksa.plugins.usbcamera.periksa-cap-usb-camera-main-6\:/layout/activity_usbcamera.xml=/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/layout/activity_usbcamera.xml
++id.periksa.plugins.usbcamera.periksa-cap-usb-camera-main-6\:/layout/dialog_camera.xml=/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/layout/dialog_camera.xml
++id.periksa.plugins.usbcamera.periksa-cap-usb-camera-main-6\:/layout/listitem_device.xml=/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/layout/listitem_device.xml
++id.periksa.plugins.usbcamera.periksa-cap-usb-camera-main-6\:/xml/device_filter.xml=/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/xml/device_filter.xml
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml
+new file mode 100644
+index 0000000..4277211
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml
+@@ -0,0 +1,14 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <dimen name="button_size">48dp</dimen>
++    <dimen name="horizontal_margin">16dp</dimen>
++    <dimen name="list_font_size">18sp</dimen>
++    <dimen name="list_height_min">32dp</dimen>
++    <dimen name="vertical_margin">16dp</dimen>
++    <string name="app_name">libusbcamera</string>
++    <string name="camera">Camera</string>
++    <string name="cancel">Cancel</string>
++    <string name="no_device">Camera Device Not Found</string>
++    <string name="refresh">Refresh</string>
++    <string name="select">Select USB Device</string>
++</resources>
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+new file mode 100644
+index 0000000..a1a4c32
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~:!&lt;dir>navigation"><source path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/res"><file name="listitem_device" path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/res/layout/listitem_device.xml" qualifiers="" type="layout"/><file name="activity_usbcamera" path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/res/layout/activity_usbcamera.xml" qualifiers="" type="layout"/><file name="dialog_camera" path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/res/layout/dialog_camera.xml" qualifiers="" type="layout"/><file path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/res/values/dimens.xml" qualifiers=""><dimen name="horizontal_margin">16dp</dimen><dimen name="vertical_margin">16dp</dimen><dimen name="button_size">48dp</dimen><dimen name="list_font_size">18sp</dimen><dimen name="list_height_min">32dp</dimen></file><file path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/res/values/strings.xml" qualifiers=""><string name="app_name">libusbcamera</string><string name="select">Select USB Device</string><string name="refresh">Refresh</string><string name="camera">Camera</string><string name="no_device">Camera Device Not Found</string><string name="cancel">Cancel</string></file><file name="device_filter" path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/res/xml/device_filter.xml" qualifiers="" type="xml"/></source></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~:!&lt;dir>navigation"><source path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~:!&lt;dir>navigation"><source path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/build/generated/res/resValues/debug"/></dataSet><mergedItems/></merger>
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/mergeDebugAssets/merger.xml b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/mergeDebugAssets/merger.xml
+new file mode 100644
+index 0000000..99d41d1
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/mergeDebugAssets/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/assets"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/debug/assets"/></dataSet><dataSet config="generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/build/intermediates/shader_assets/debug/compileDebugShaders/out"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+new file mode 100644
+index 0000000..36d7b86
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/jniLibs"><file name="armeabi-v7a/libuvc.so" path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/jniLibs/armeabi-v7a/libuvc.so"/><file name="armeabi-v7a/libUVCCamera.so" path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/jniLibs/armeabi-v7a/libUVCCamera.so"/><file name="armeabi-v7a/libjpeg-turbo1500.so" path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/jniLibs/armeabi-v7a/libjpeg-turbo1500.so"/><file name="armeabi-v7a/libusb100.so" path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/jniLibs/armeabi-v7a/libusb100.so"/><file name="arm64-v8a/libuvc.so" path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/jniLibs/arm64-v8a/libuvc.so"/><file name="arm64-v8a/libUVCCamera.so" path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/jniLibs/arm64-v8a/libUVCCamera.so"/><file name="arm64-v8a/libjpeg-turbo1500.so" path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/jniLibs/arm64-v8a/libjpeg-turbo1500.so"/><file name="arm64-v8a/libusb100.so" path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/jniLibs/arm64-v8a/libusb100.so"/></source></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/debug/jniLibs"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/mergeDebugShaders/merger.xml b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+new file mode 100644
+index 0000000..8c790ba
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/debug/shaders"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseActivity$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseActivity$1.class
+new file mode 100644
+index 0000000..1fab050
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseActivity$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseActivity$ShowToastTask.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseActivity$ShowToastTask.class
+new file mode 100644
+index 0000000..52d18e7
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseActivity$ShowToastTask.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseActivity.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseActivity.class
+new file mode 100644
+index 0000000..caa4e79
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseActivity.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseFragment$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseFragment$1.class
+new file mode 100644
+index 0000000..af571e7
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseFragment$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseFragment$ShowToastTask.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseFragment$ShowToastTask.class
+new file mode 100644
+index 0000000..3803e2e
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseFragment$ShowToastTask.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseFragment.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseFragment.class
+new file mode 100644
+index 0000000..b0b7fd8
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseFragment.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseService.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseService.class
+new file mode 100644
+index 0000000..a1cbe46
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/common/BaseService.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/IAudioEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/IAudioEncoder.class
+new file mode 100644
+index 0000000..1c81fa8
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/IAudioEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/IVideoEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/IVideoEncoder.class
+new file mode 100644
+index 0000000..6673f7a
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/IVideoEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaAudioEncoder$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaAudioEncoder$1.class
+new file mode 100644
+index 0000000..50753a0
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaAudioEncoder$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaAudioEncoder$AudioThread.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaAudioEncoder$AudioThread.class
+new file mode 100644
+index 0000000..81a74ad
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaAudioEncoder$AudioThread.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaAudioEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaAudioEncoder.class
+new file mode 100644
+index 0000000..a95cd02
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaAudioEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaEncoder$MediaEncoderListener.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaEncoder$MediaEncoderListener.class
+new file mode 100644
+index 0000000..87f4cf1
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaEncoder$MediaEncoderListener.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaEncoder.class
+new file mode 100644
+index 0000000..e557c00
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaMuxerWrapper.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaMuxerWrapper.class
+new file mode 100644
+index 0000000..d322635
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaMuxerWrapper.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaSurfaceEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaSurfaceEncoder.class
+new file mode 100644
+index 0000000..f1ba5eb
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaSurfaceEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaVideoBufferEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaVideoBufferEncoder.class
+new file mode 100644
+index 0000000..1536f20
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaVideoBufferEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaVideoEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaVideoEncoder.class
+new file mode 100644
+index 0000000..176b8ff
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/encoder/MediaVideoEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog$1.class
+new file mode 100644
+index 0000000..39edb09
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog$2.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog$2.class
+new file mode 100644
+index 0000000..df5673c
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog$2.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog$CameraDialogParent.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog$CameraDialogParent.class
+new file mode 100644
+index 0000000..7133168
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog$CameraDialogParent.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog$DeviceListAdapter.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog$DeviceListAdapter.class
+new file mode 100644
+index 0000000..4200eb3
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog$DeviceListAdapter.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog.class
+new file mode 100644
+index 0000000..c30c7c9
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/CameraDialog.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/IButtonCallback.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/IButtonCallback.class
+new file mode 100644
+index 0000000..9fb84b9
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/IButtonCallback.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/IFrameCallback.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/IFrameCallback.class
+new file mode 100644
+index 0000000..b8ad9d2
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/IFrameCallback.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/IStatusCallback.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/IStatusCallback.class
+new file mode 100644
+index 0000000..7d11adf
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/IStatusCallback.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraDeviceFilter.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraDeviceFilter.class
+new file mode 100644
+index 0000000..844fb18
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraDeviceFilter.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$1.class
+new file mode 100644
+index 0000000..0f00db0
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2$1.class
+new file mode 100644
+index 0000000..fcda289
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2.class
+new file mode 100644
+index 0000000..d9a2bbb
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$3.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$3.class
+new file mode 100644
+index 0000000..76a30ad
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$3.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$4.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$4.class
+new file mode 100644
+index 0000000..6a1db68
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$4.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$5.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$5.class
+new file mode 100644
+index 0000000..bf4eb03
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$5.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$6.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$6.class
+new file mode 100644
+index 0000000..8a76e8f
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$6.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$OnDeviceConnectListener.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$OnDeviceConnectListener.class
+new file mode 100644
+index 0000000..d6537cd
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$OnDeviceConnectListener.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbControlBlock.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbControlBlock.class
+new file mode 100644
+index 0000000..9d70c76
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbControlBlock.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbDeviceInfo.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbDeviceInfo.class
+new file mode 100644
+index 0000000..3d2b66c
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbDeviceInfo.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor.class
+new file mode 100644
+index 0000000..ed2b1ba
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/Size$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/Size$1.class
+new file mode 100644
+index 0000000..6647d18
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/Size$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/Size.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/Size.class
+new file mode 100644
+index 0000000..e6700ea
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/Size.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/USBVendorId.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/USBVendorId.class
+new file mode 100644
+index 0000000..210d5c7
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/USBVendorId.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/UVCCamera.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/UVCCamera.class
+new file mode 100644
+index 0000000..c4e94f1
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usb_libuvccamera/UVCCamera.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraCallback.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraCallback.class
+new file mode 100644
+index 0000000..df47104
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraCallback.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$1.class
+new file mode 100644
+index 0000000..56ea91e
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$2.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$2.class
+new file mode 100644
+index 0000000..63856eb
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$2.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread.class
+new file mode 100644
+index 0000000..8b329cb
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler.class
+new file mode 100644
+index 0000000..55664f9
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/UVCCameraHandler.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/UVCCameraHandler.class
+new file mode 100644
+index 0000000..6b8f2dd
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/UVCCameraHandler.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface$1.class
+new file mode 100644
+index 0000000..72577d2
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface.class
+new file mode 100644
+index 0000000..8c2fd11
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/AspectRatioTextureView.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/AspectRatioTextureView.class
+new file mode 100644
+index 0000000..e6c7dd5
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/AspectRatioTextureView.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/CameraViewInterface$Callback.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/CameraViewInterface$Callback.class
+new file mode 100644
+index 0000000..845e3db
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/CameraViewInterface$Callback.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/CameraViewInterface.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/CameraViewInterface.class
+new file mode 100644
+index 0000000..5c220d7
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/CameraViewInterface.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/UVCCameraTextureView$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/UVCCameraTextureView$1.class
+new file mode 100644
+index 0000000..b512665
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/UVCCameraTextureView$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/UVCCameraTextureView$RenderHandler$RenderThread.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/UVCCameraTextureView$RenderHandler$RenderThread.class
+new file mode 100644
+index 0000000..f9d87e4
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/UVCCameraTextureView$RenderHandler$RenderThread.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/UVCCameraTextureView$RenderHandler.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/UVCCameraTextureView$RenderHandler.class
+new file mode 100644
+index 0000000..c152311
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/UVCCameraTextureView$RenderHandler.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/UVCCameraTextureView.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/UVCCameraTextureView.class
+new file mode 100644
+index 0000000..56025b2
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/serenegiant/widget/UVCCameraTextureView.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$1$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$1$1.class
+new file mode 100644
+index 0000000..d3c9a3b
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$1$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$1.class
+new file mode 100644
+index 0000000..ceb004b
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$2.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$2.class
+new file mode 100644
+index 0000000..e12e51c
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$2.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$3.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$3.class
+new file mode 100644
+index 0000000..a1db5eb
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$3.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$4.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$4.class
+new file mode 100644
+index 0000000..457ce38
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity$4.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity.class
+new file mode 100644
+index 0000000..8fb9e42
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/USBCameraActivity.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/UsbCamera.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/UsbCamera.class
+new file mode 100644
+index 0000000..ec95fb0
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/UsbCamera.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/UsbCameraPlugin.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/UsbCameraPlugin.class
+new file mode 100644
+index 0000000..5fda1d3
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/id/periksa/plugins/usbcamera/UsbCameraPlugin.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/arm64-v8a/libUVCCamera.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/arm64-v8a/libUVCCamera.so
+new file mode 100644
+index 0000000..4700a6a
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/arm64-v8a/libUVCCamera.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/arm64-v8a/libjpeg-turbo1500.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/arm64-v8a/libjpeg-turbo1500.so
+new file mode 100644
+index 0000000..7ca24e2
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/arm64-v8a/libjpeg-turbo1500.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/arm64-v8a/libusb100.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/arm64-v8a/libusb100.so
+new file mode 100644
+index 0000000..99c5969
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/arm64-v8a/libusb100.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/arm64-v8a/libuvc.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/arm64-v8a/libuvc.so
+new file mode 100644
+index 0000000..9644efe
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/arm64-v8a/libuvc.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/armeabi-v7a/libUVCCamera.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/armeabi-v7a/libUVCCamera.so
+new file mode 100644
+index 0000000..a5494bb
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/armeabi-v7a/libUVCCamera.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/armeabi-v7a/libjpeg-turbo1500.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/armeabi-v7a/libjpeg-turbo1500.so
+new file mode 100644
+index 0000000..7106a45
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/armeabi-v7a/libjpeg-turbo1500.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/armeabi-v7a/libusb100.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/armeabi-v7a/libusb100.so
+new file mode 100644
+index 0000000..1ba15cd
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/armeabi-v7a/libusb100.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/armeabi-v7a/libuvc.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/armeabi-v7a/libuvc.so
+new file mode 100644
+index 0000000..46e2373
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/library_jni/debug/copyDebugJniLibsProjectOnly/jni/armeabi-v7a/libuvc.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+new file mode 100644
+index 0000000..613fcb6
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+@@ -0,0 +1,24 @@
++R_DEF: Internal format may change without notice
++local
++dimen button_size
++dimen horizontal_margin
++dimen list_font_size
++dimen list_height_min
++dimen vertical_margin
++id LinearLayout1
++id btn_cancel
++id btn_capture
++id camera_view
++id name_text
++id spinner1
++id textView1
++layout activity_usbcamera
++layout dialog_camera
++layout listitem_device
++string app_name
++string camera
++string cancel
++string no_device
++string refresh
++string select
++xml device_filter
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+new file mode 100644
+index 0000000..0fa3622
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+@@ -0,0 +1,38 @@
++1<?xml version="1.0" encoding="utf-8"?>
++2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++3    package="id.periksa.plugins.usbcamera" >
++4
++5    <uses-sdk android:minSdkVersion="24" />
++6
++7    <uses-permission android:name="android.permission.CAMERA" />
++7-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:5:5-65
++7-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:5:22-62
++8    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
++8-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:6:5-80
++8-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:6:22-77
++9    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
++9-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:7:5-81
++9-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:7:22-78
++10
++11    <uses-feature
++11-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:10:5-12:35
++12        android:glEsVersion="0x00020000"
++12-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:11:9-41
++13        android:required="true" />
++13-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:12:9-32
++14
++15    <application>
++15-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:14:5-21:19
++16        <activity
++16-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:15:9-20:11
++17            android:name="id.periksa.plugins.usbcamera.USBCameraActivity"
++17-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:16:13-46
++18            android:configChanges="orientation"
++18-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:17:13-48
++19            android:screenOrientation="portrait"
++19-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:18:13-49
++20            android:theme="@style/Theme.AppCompat.NoActionBar" />
++20-->/Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:19:13-63
++21    </application>
++22
++23</manifest>
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/arm64-v8a/libUVCCamera.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/arm64-v8a/libUVCCamera.so
+new file mode 100644
+index 0000000..4700a6a
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/arm64-v8a/libUVCCamera.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/arm64-v8a/libjpeg-turbo1500.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/arm64-v8a/libjpeg-turbo1500.so
+new file mode 100644
+index 0000000..7ca24e2
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/arm64-v8a/libjpeg-turbo1500.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/arm64-v8a/libusb100.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/arm64-v8a/libusb100.so
+new file mode 100644
+index 0000000..99c5969
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/arm64-v8a/libusb100.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/arm64-v8a/libuvc.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/arm64-v8a/libuvc.so
+new file mode 100644
+index 0000000..9644efe
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/arm64-v8a/libuvc.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/armeabi-v7a/libUVCCamera.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/armeabi-v7a/libUVCCamera.so
+new file mode 100644
+index 0000000..a5494bb
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/armeabi-v7a/libUVCCamera.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/armeabi-v7a/libjpeg-turbo1500.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/armeabi-v7a/libjpeg-turbo1500.so
+new file mode 100644
+index 0000000..7106a45
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/armeabi-v7a/libjpeg-turbo1500.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/armeabi-v7a/libusb100.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/armeabi-v7a/libusb100.so
+new file mode 100644
+index 0000000..1ba15cd
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/armeabi-v7a/libusb100.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/armeabi-v7a/libuvc.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/armeabi-v7a/libuvc.so
+new file mode 100644
+index 0000000..46e2373
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_jni_libs/debug/mergeDebugJniLibFolders/out/armeabi-v7a/libuvc.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+new file mode 100644
+index 0000000..4decf4b
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+@@ -0,0 +1,23 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="id.periksa.plugins.usbcamera" >
++
++    <uses-sdk android:minSdkVersion="24" />
++
++    <uses-permission android:name="android.permission.CAMERA" />
++    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
++    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
++
++    <uses-feature
++        android:glEsVersion="0x00020000"
++        android:required="true" />
++
++    <application>
++        <activity
++            android:name="id.periksa.plugins.usbcamera.USBCameraActivity"
++            android:configChanges="orientation"
++            android:screenOrientation="portrait"
++            android:theme="@style/Theme.AppCompat.NoActionBar" />
++    </application>
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/arm64-v8a/libUVCCamera.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/arm64-v8a/libUVCCamera.so
+new file mode 100644
+index 0000000..4700a6a
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/arm64-v8a/libUVCCamera.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/arm64-v8a/libjpeg-turbo1500.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/arm64-v8a/libjpeg-turbo1500.so
+new file mode 100644
+index 0000000..7ca24e2
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/arm64-v8a/libjpeg-turbo1500.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/arm64-v8a/libusb100.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/arm64-v8a/libusb100.so
+new file mode 100644
+index 0000000..99c5969
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/arm64-v8a/libusb100.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/arm64-v8a/libuvc.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/arm64-v8a/libuvc.so
+new file mode 100644
+index 0000000..9644efe
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/arm64-v8a/libuvc.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/armeabi-v7a/libUVCCamera.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/armeabi-v7a/libUVCCamera.so
+new file mode 100644
+index 0000000..a5494bb
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/armeabi-v7a/libUVCCamera.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/armeabi-v7a/libjpeg-turbo1500.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/armeabi-v7a/libjpeg-turbo1500.so
+new file mode 100644
+index 0000000..7106a45
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/armeabi-v7a/libjpeg-turbo1500.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/armeabi-v7a/libusb100.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/armeabi-v7a/libusb100.so
+new file mode 100644
+index 0000000..1ba15cd
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/armeabi-v7a/libusb100.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/armeabi-v7a/libuvc.so b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/armeabi-v7a/libuvc.so
+new file mode 100644
+index 0000000..46e2373
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/merged_native_libs/debug/mergeDebugNativeLibs/out/lib/armeabi-v7a/libuvc.so differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+new file mode 100644
+index 0000000..0637a08
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+@@ -0,0 +1 @@
++[]
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+new file mode 100644
+index 0000000..08f4ebe
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+@@ -0,0 +1 @@
++0 Warning/Error
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/layout/activity_usbcamera.xml b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/layout/activity_usbcamera.xml
+new file mode 100644
+index 0000000..8fd9665
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/layout/activity_usbcamera.xml
+@@ -0,0 +1,53 @@
++<?xml version="1.0" encoding="utf-8"?>
++<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:background="#000000"
++    tools:context=".USBCameraActivity">
++
++    <FrameLayout
++        android:layout_width="0dp"
++        android:layout_height="0dp"
++        app:layout_constraintBottom_toBottomOf="parent"
++        app:layout_constraintDimensionRatio="H,4:3"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintHorizontal_bias="1.0"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toTopOf="parent">
++
++        <com.serenegiant.widget.UVCCameraTextureView
++            android:id="@+id/camera_view"
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:layout_gravity="center" />
++    </FrameLayout>
++
++    <ImageButton
++        android:id="@+id/btn_capture"
++        android:layout_width="64dp"
++        android:layout_height="64dp"
++        android:layout_marginBottom="32dp"
++        android:background="#00FFFFFF"
++        android:contentDescription="Capture Button"
++        android:tint="#FFFFFF"
++        app:layout_constraintBottom_toBottomOf="parent"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintStart_toStartOf="parent"
++        app:srcCompat="@drawable/mask_circle" />
++
++    <TextView
++        android:id="@+id/btn_cancel"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="@string/cancel"
++        android:textAlignment="center"
++        android:textColor="@color/cardview_light_background"
++        android:textSize="16sp"
++        app:layout_constraintBottom_toBottomOf="@+id/btn_capture"
++        app:layout_constraintEnd_toStartOf="@+id/btn_capture"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toTopOf="@+id/btn_capture" />
++
++</androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/layout/dialog_camera.xml b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/layout/dialog_camera.xml
+new file mode 100644
+index 0000000..91f6c3e
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/layout/dialog_camera.xml
+@@ -0,0 +1,31 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:id="@+id/LinearLayout1"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:orientation="vertical"
++    android:paddingBottom="@dimen/vertical_margin"
++    android:paddingLeft="@dimen/horizontal_margin"
++    android:paddingRight="@dimen/horizontal_margin"
++    android:paddingTop="@dimen/vertical_margin"
++    tools:context="com.serenegiant.usb.CameraDialog" >
++
++    <TextView
++        android:id="@+id/textView1"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="@string/camera" />
++
++    <Spinner
++        android:id="@+id/spinner1"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content" />
++
++    <TextView
++        android:id="@id/android:empty"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:text="@string/no_device" />
++
++</LinearLayout>
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/layout/listitem_device.xml b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/layout/listitem_device.xml
+new file mode 100644
+index 0000000..2b1cd51
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/layout/listitem_device.xml
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="utf-8"?>
++
++<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
++    android:id="@+id/name_text"
++    android:layout_width="wrap_content"
++    android:layout_height="wrap_content"
++	android:minHeight="@dimen/list_height_min"
++    android:textSize="@dimen/list_font_size" >
++
++</CheckedTextView>
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/values/values.xml b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/values/values.xml
+new file mode 100644
+index 0000000..4277211
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/values/values.xml
+@@ -0,0 +1,14 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <dimen name="button_size">48dp</dimen>
++    <dimen name="horizontal_margin">16dp</dimen>
++    <dimen name="list_font_size">18sp</dimen>
++    <dimen name="list_height_min">32dp</dimen>
++    <dimen name="vertical_margin">16dp</dimen>
++    <string name="app_name">libusbcamera</string>
++    <string name="camera">Camera</string>
++    <string name="cancel">Cancel</string>
++    <string name="no_device">Camera Device Not Found</string>
++    <string name="refresh">Refresh</string>
++    <string name="select">Select USB Device</string>
++</resources>
+\ No newline at end of file
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/xml/device_filter.xml b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/xml/device_filter.xml
+new file mode 100644
+index 0000000..61a1cca
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/packaged_res/debug/packageDebugResources/xml/device_filter.xml
+@@ -0,0 +1,37 @@
++<?xml version="1.0" encoding="utf-8"?>
++
++<!--
++  ~  UVCCamera
++  ~  library and sample to access to UVC web camera on non-rooted Android device
++  ~
++  ~ Copyright (c) 2014-2017 saki t_saki@serenegiant.com
++  ~
++  ~  Licensed under the Apache License, Version 2.0 (the "License");
++  ~  you may not use this file except in compliance with the License.
++  ~   You may obtain a copy of the License at
++  ~
++  ~      http://www.apache.org/licenses/LICENSE-2.0
++  ~
++  ~   Unless required by applicable law or agreed to in writing, software
++  ~   distributed under the License is distributed on an "AS IS" BASIS,
++  ~   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++  ~   See the License for the specific language governing permissions and
++  ~   limitations under the License.
++  ~
++  ~  All files in the folder are under this Apache License, Version 2.0.
++  ~  Files in the libjpeg-turbo, libusb, libuvc, rapidjson folder
++  ~  may have a different license, see the respective files.
++  -->
++
++<usb>
++	<usb-device class="239" subclass="2" />	<!-- all device of UVC -->
++	<!-- a few android 9.0 -->
++	<usb-device class="14" subclass="9" />
++	<usb-device class="2" subclass="0" />
++	<usb-device class="6" subclass="-1" />
++	<usb-device class="39" subclass="0" />
++	<usb-device product-id="4836" vendor-id="9573" />
++	<usb-device product-id="2229" vendor-id="1133" />
++	<usb-device product-id="640" vendor-id="1409" />
++	<usb-device product-id="258" vendor-id="9228" />
++</usb>
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseActivity$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseActivity$1.class
+new file mode 100644
+index 0000000..1fab050
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseActivity$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseActivity$ShowToastTask.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseActivity$ShowToastTask.class
+new file mode 100644
+index 0000000..52d18e7
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseActivity$ShowToastTask.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseActivity.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseActivity.class
+new file mode 100644
+index 0000000..caa4e79
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseActivity.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseFragment$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseFragment$1.class
+new file mode 100644
+index 0000000..af571e7
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseFragment$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseFragment$ShowToastTask.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseFragment$ShowToastTask.class
+new file mode 100644
+index 0000000..3803e2e
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseFragment$ShowToastTask.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseFragment.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseFragment.class
+new file mode 100644
+index 0000000..b0b7fd8
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseFragment.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseService.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseService.class
+new file mode 100644
+index 0000000..a1cbe46
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/common/BaseService.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/IAudioEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/IAudioEncoder.class
+new file mode 100644
+index 0000000..1c81fa8
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/IAudioEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/IVideoEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/IVideoEncoder.class
+new file mode 100644
+index 0000000..6673f7a
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/IVideoEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaAudioEncoder$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaAudioEncoder$1.class
+new file mode 100644
+index 0000000..50753a0
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaAudioEncoder$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaAudioEncoder$AudioThread.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaAudioEncoder$AudioThread.class
+new file mode 100644
+index 0000000..81a74ad
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaAudioEncoder$AudioThread.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaAudioEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaAudioEncoder.class
+new file mode 100644
+index 0000000..a95cd02
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaAudioEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaEncoder$MediaEncoderListener.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaEncoder$MediaEncoderListener.class
+new file mode 100644
+index 0000000..87f4cf1
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaEncoder$MediaEncoderListener.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaEncoder.class
+new file mode 100644
+index 0000000..e557c00
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaMuxerWrapper.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaMuxerWrapper.class
+new file mode 100644
+index 0000000..d322635
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaMuxerWrapper.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaSurfaceEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaSurfaceEncoder.class
+new file mode 100644
+index 0000000..f1ba5eb
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaSurfaceEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaVideoBufferEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaVideoBufferEncoder.class
+new file mode 100644
+index 0000000..1536f20
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaVideoBufferEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaVideoEncoder.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaVideoEncoder.class
+new file mode 100644
+index 0000000..176b8ff
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/encoder/MediaVideoEncoder.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog$1.class
+new file mode 100644
+index 0000000..39edb09
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog$2.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog$2.class
+new file mode 100644
+index 0000000..df5673c
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog$2.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog$CameraDialogParent.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog$CameraDialogParent.class
+new file mode 100644
+index 0000000..7133168
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog$CameraDialogParent.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog$DeviceListAdapter.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog$DeviceListAdapter.class
+new file mode 100644
+index 0000000..4200eb3
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog$DeviceListAdapter.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog.class
+new file mode 100644
+index 0000000..c30c7c9
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/CameraDialog.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/IButtonCallback.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/IButtonCallback.class
+new file mode 100644
+index 0000000..9fb84b9
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/IButtonCallback.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/IFrameCallback.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/IFrameCallback.class
+new file mode 100644
+index 0000000..b8ad9d2
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/IFrameCallback.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/IStatusCallback.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/IStatusCallback.class
+new file mode 100644
+index 0000000..7d11adf
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/IStatusCallback.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraDeviceFilter.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraDeviceFilter.class
+new file mode 100644
+index 0000000..844fb18
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraDeviceFilter.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$1.class
+new file mode 100644
+index 0000000..0f00db0
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2$1.class
+new file mode 100644
+index 0000000..fcda289
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2.class
+new file mode 100644
+index 0000000..d9a2bbb
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$2.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$3.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$3.class
+new file mode 100644
+index 0000000..76a30ad
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$3.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$4.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$4.class
+new file mode 100644
+index 0000000..6a1db68
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$4.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$5.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$5.class
+new file mode 100644
+index 0000000..bf4eb03
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$5.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$6.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$6.class
+new file mode 100644
+index 0000000..8a76e8f
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$6.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$OnDeviceConnectListener.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$OnDeviceConnectListener.class
+new file mode 100644
+index 0000000..d6537cd
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$OnDeviceConnectListener.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbControlBlock.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbControlBlock.class
+new file mode 100644
+index 0000000..9d70c76
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbControlBlock.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbDeviceInfo.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbDeviceInfo.class
+new file mode 100644
+index 0000000..3d2b66c
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor$UsbDeviceInfo.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor.class
+new file mode 100644
+index 0000000..ed2b1ba
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/LibUVCCameraUSBMonitor.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/Size$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/Size$1.class
+new file mode 100644
+index 0000000..6647d18
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/Size$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/Size.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/Size.class
+new file mode 100644
+index 0000000..e6700ea
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/Size.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/USBVendorId.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/USBVendorId.class
+new file mode 100644
+index 0000000..210d5c7
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/USBVendorId.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/UVCCamera.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/UVCCamera.class
+new file mode 100644
+index 0000000..c4e94f1
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usb_libuvccamera/UVCCamera.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraCallback.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraCallback.class
+new file mode 100644
+index 0000000..df47104
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraCallback.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$1.class
+new file mode 100644
+index 0000000..56ea91e
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$2.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$2.class
+new file mode 100644
+index 0000000..63856eb
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread$2.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread.class
+new file mode 100644
+index 0000000..8b329cb
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler$CameraThread.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler.class
+new file mode 100644
+index 0000000..55664f9
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/AbstractUVCCameraHandler.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/UVCCameraHandler.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/UVCCameraHandler.class
+new file mode 100644
+index 0000000..6b8f2dd
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/UVCCameraHandler.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface$1.class
+new file mode 100644
+index 0000000..72577d2
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface.class
+new file mode 100644
+index 0000000..8c2fd11
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/usbcameracommon/UVCCameraHandlerMultiSurface.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/AspectRatioTextureView.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/AspectRatioTextureView.class
+new file mode 100644
+index 0000000..e6c7dd5
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/AspectRatioTextureView.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/CameraViewInterface$Callback.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/CameraViewInterface$Callback.class
+new file mode 100644
+index 0000000..845e3db
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/CameraViewInterface$Callback.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/CameraViewInterface.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/CameraViewInterface.class
+new file mode 100644
+index 0000000..5c220d7
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/CameraViewInterface.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/UVCCameraTextureView$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/UVCCameraTextureView$1.class
+new file mode 100644
+index 0000000..b512665
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/UVCCameraTextureView$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/UVCCameraTextureView$RenderHandler$RenderThread.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/UVCCameraTextureView$RenderHandler$RenderThread.class
+new file mode 100644
+index 0000000..f9d87e4
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/UVCCameraTextureView$RenderHandler$RenderThread.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/UVCCameraTextureView$RenderHandler.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/UVCCameraTextureView$RenderHandler.class
+new file mode 100644
+index 0000000..c152311
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/UVCCameraTextureView$RenderHandler.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/UVCCameraTextureView.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/UVCCameraTextureView.class
+new file mode 100644
+index 0000000..56025b2
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/serenegiant/widget/UVCCameraTextureView.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$1$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$1$1.class
+new file mode 100644
+index 0000000..d3c9a3b
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$1$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$1.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$1.class
+new file mode 100644
+index 0000000..ceb004b
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$1.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$2.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$2.class
+new file mode 100644
+index 0000000..e12e51c
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$2.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$3.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$3.class
+new file mode 100644
+index 0000000..a1db5eb
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$3.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$4.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$4.class
+new file mode 100644
+index 0000000..457ce38
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity$4.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity.class
+new file mode 100644
+index 0000000..8fb9e42
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/USBCameraActivity.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/UsbCamera.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/UsbCamera.class
+new file mode 100644
+index 0000000..ec95fb0
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/UsbCamera.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/UsbCameraPlugin.class b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/UsbCameraPlugin.class
+new file mode 100644
+index 0000000..5fda1d3
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/id/periksa/plugins/usbcamera/UsbCameraPlugin.class differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar
+new file mode 100644
+index 0000000..ecdeaed
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar differ
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+new file mode 100644
+index 0000000..18a40b3
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+@@ -0,0 +1,23 @@
++id.periksa.plugins.usbcamera
++dimen button_size
++dimen horizontal_margin
++dimen list_font_size
++dimen list_height_min
++dimen vertical_margin
++id LinearLayout1
++id btn_cancel
++id btn_capture
++id camera_view
++id name_text
++id spinner1
++id textView1
++layout activity_usbcamera
++layout dialog_camera
++layout listitem_device
++string app_name
++string camera
++string cancel
++string no_device
++string refresh
++string select
++xml device_filter
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/@periksa/cap-usb-camera/android/build/outputs/logs/manifest-merger-debug-report.txt
+new file mode 100644
+index 0000000..c0b5d96
+--- /dev/null
++++ b/node_modules/@periksa/cap-usb-camera/android/build/outputs/logs/manifest-merger-debug-report.txt
+@@ -0,0 +1,47 @@
++-- Merging decision tree log ---
++manifest
++ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:2:1-23:12
++INJECTED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:2:1-23:12
++	package
++		ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:3:5-43
++		INJECTED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml
++	xmlns:android
++		ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:2:11-69
++uses-permission#android.permission.CAMERA
++ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:5:5-65
++	android:name
++		ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:5:22-62
++uses-permission#android.permission.READ_EXTERNAL_STORAGE
++ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:6:5-80
++	android:name
++		ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:6:22-77
++uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
++ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:7:5-81
++	android:name
++		ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:7:22-78
++uses-feature#0x00020000
++ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:10:5-12:35
++	android:glEsVersion
++		ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:11:9-41
++	android:required
++		ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:12:9-32
++application
++ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:14:5-21:19
++activity#id.periksa.plugins.usbcamera.USBCameraActivity
++ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:15:9-20:11
++	android:screenOrientation
++		ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:18:13-49
++	android:configChanges
++		ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:17:13-48
++	android:theme
++		ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:19:13-63
++	android:name
++		ADDED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml:16:13-46
++uses-sdk
++INJECTED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
++INJECTED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml
++INJECTED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml
++	android:targetSdkVersion
++		INJECTED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml
++	android:minSdkVersion
++		INJECTED from /Users/Patron/Desktop/SAIL/frontend/node_modules/@periksa/cap-usb-camera/android/src/main/AndroidManifest.xml
+diff --git a/node_modules/@periksa/cap-usb-camera/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/@periksa/cap-usb-camera/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
+new file mode 100644
+index 0000000..e1d3663
+Binary files /dev/null and b/node_modules/@periksa/cap-usb-camera/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
