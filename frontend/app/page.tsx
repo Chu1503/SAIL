@@ -6,93 +6,150 @@ import Camera from "@/components/Camera";
 import Result from "@/components/Result";
 import InstallPrompt from "@/components/InstallPrompt";
 import { processImage, type ProcessResult } from "@/lib/api";
-import { btnGhost, btnPrimary } from "@/lib/ui";
 
-type Stage = "idle" | "camera" | "preview" | "processing" | "result";
+type Stage = "idle" | "camera" | "processing" | "result";
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("idle");
-  const [blob, setBlob] = useState<Blob | null>(null);
-  const [previewUrl, setPreviewUrl] = useState("");
   const [result, setResult] = useState<ProcessResult | null>(null);
   const [error, setError] = useState("");
 
-  function reset() {
+  function goHome() {
     setStage("idle");
-    setBlob(null);
-    setPreviewUrl("");
     setResult(null);
     setError("");
   }
 
-  function handleCapture(b: Blob, url: string) {
-    setBlob(b);
-    setPreviewUrl(url);
+  function openCamera() {
+    setResult(null);
     setError("");
-    setStage("preview");
+    setStage("camera");
   }
 
-  async function runPipeline() {
-    if (!blob) return;
+  async function handleCapture(capturedBlob: Blob) {
     setStage("processing");
     setError("");
+
     try {
-      const res = await processImage(blob);
-      setResult(res);
+      const processedResult = await processImage(capturedBlob);
+      setResult(processedResult);
       setStage("result");
-    } catch {
-      setError("Processing failed. Make sure the backend is running on port 8000.");
-      setStage("preview");
+    } catch (err) {
+      console.error("Processing failed:", err);
+      setError("Processing failed. Check your connection and try again.");
+      setStage("camera");
     }
   }
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col">
-      <header className="flex items-center justify-between">
-        {/* <span className="text-sm font-semibold tracking-wide text-emerald-400">VEINZ</span> */}
-        <InstallPrompt />
-      </header>
+    <main className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col bg-black">
+      {stage === "idle" && (
+        <>
+          <header className="flex items-center justify-end">
+            <InstallPrompt />
+          </header>
 
-      <div className="mt-8 sm:mt-10">
-        {stage === "idle" && <Idle onStart={() => setStage("camera")} />}
+          <Idle onStart={openCamera} />
 
-        {stage === "camera" && <Camera onCapture={handleCapture} onCancel={reset} />}
+          <footer className="mt-auto pt-8 text-center text-[10px] font-medium uppercase tracking-[0.3em] text-neutral-700">
+            SAIL
+          </footer>
+        </>
+      )}
 
-        {stage === "preview" && (
-          <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-3 sm:p-4">
-            <img src={previewUrl} alt="Captured frame" className="w-full rounded-2xl border border-white/10" />
-            {error && <p className="mt-3 text-center text-sm text-red-400">{error}</p>}
-            {/* <p className="mt-4 text-center text-sm text-neutral-400">Is this frame clear enough?</p> */}
-            <div className="mt-4 flex justify-center gap-3">
-              <button onClick={() => setStage("camera")} className={btnGhost}>Retake</button>
-              <button onClick={runPipeline} className={btnPrimary}>Use this photo</button>
-            </div>
-          </div>
-        )}
+      {stage === "camera" && (
+        <Camera onCapture={handleCapture} onCancel={goHome} />
+      )}
 
-        {stage === "processing" && (
-          <div className="flex flex-col items-center rounded-3xl border border-white/10 bg-white/[0.02] px-6 py-20">
-            <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/15 border-t-emerald-400" />
-            <p className="mt-5 text-sm text-neutral-400">Loading…</p>
-          </div>
-        )}
+      {stage === "processing" && <LoadingScreen />}
 
-        {stage === "result" && result && <Result data={result} onRestart={reset} />}
-      </div>
-
-      <footer className="mt-auto pt-10 text-center text-xs text-neutral-600">SAIL</footer>
+      {stage === "result" && result && (
+        <Result
+          data={result}
+          onHome={goHome}
+          onRestart={openCamera}
+        />
+      )}
     </main>
   );
 }
 
 function Idle({ onStart }: { onStart: () => void }) {
   return (
-    <div className="flex flex-col items-center rounded-3xl border border-white/10 bg-white/[0.02] px-6 py-16 text-center">
-      <h2 className="text-xl font-semibold tracking-wide text-emerald-400">VEINZ</h2>
-      <p className="mt-2 max-w-sm text-sm text-neutral-400">
-        Short Sentence About APP
-      </p>
-      <button onClick={onStart} className={`${btnPrimary} mt-8`}>Start Camera</button>
-    </div>
+    <section className="flex flex-1 flex-col items-center text-center">
+      <div className="pt-[16dvh]">
+        {/* <p className="text-xs font-medium uppercase tracking-[0.35em] text-neutral-500">
+          External vein imaging
+        </p> */}
+
+        <h1 className="mt-4 text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl">
+          VEINZ
+        </h1>
+
+        <p className="mx-auto mt-4 max-w-xs text-sm leading-6 text-neutral-500">
+          Short Description
+        </p>
+      </div>
+
+      <div className="mt-auto pb-5 pt-16">
+        <button
+          type="button"
+          onClick={onStart}
+          aria-label="Start capture"
+          className="flex h-36 w-36 items-center justify-center rounded-full bg-emerald-400 text-black shadow-[0_0_60px_rgba(52,211,153,0.16)] transition active:scale-95"
+        >
+          <span className="text-sm font-semibold uppercase tracking-[0.12em]">
+            Start
+          </span>
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function LoadingScreen() {
+  return (
+    <section className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+      <div className="relative h-16 w-16">
+        <div className="absolute inset-0 rounded-full border border-white/10" />
+        <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-emerald-400 border-r-emerald-400/40" />
+        <div className="absolute inset-[10px] animate-pulse rounded-full bg-emerald-400/10" />
+      </div>
+    </section>
+  );
+}
+
+function RetryIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M3 12a9 9 0 1 0 3-6.7" />
+      <path d="M3 4v6h6" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m5 12 4 4L19 6" />
+    </svg>
   );
 }

@@ -116,32 +116,46 @@ export default function Camera({ onCapture, onCancel }: Props) {
   }
 
   if (native) {
-    return (
-      <div className="flex flex-col items-center rounded-3xl border border-white/10 bg-white/[0.02] px-6 py-16 text-center">
-        {error ? (
-          <>
-            {/* <p className="mt-3 text-xs text-neutral-500">
-              Platform: {Capacitor.getPlatform()} | Plugin:{" "}{String(Capacitor.isPluginAvailable("UsbCamera"))}
-            </p> */}
-            <p className="text-sm text-red-400">{error}</p>
-            <div className="mt-6 flex justify-center gap-3">
-              <button onClick={onCancel} className={btnGhost}>Back</button>
-              <button onClick={openUsbCamera} className={btnPrimary}>Try again</button>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/15 border-t-emerald-400" />
-            <p className="mt-5 text-sm text-neutral-400">Loading…</p>
-          </>
-        )}
-      </div>
-    );
-  }
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black">
+      {error ? (
+        <div className="px-8 text-center">
+          <p className="text-sm leading-6 text-red-400">{error}</p>
+
+          <div className="mt-7 flex justify-center gap-5">
+            <button
+              type="button"
+              onClick={onCancel}
+              aria-label="Back"
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-white/[0.04]"
+            >
+              <BackIcon />
+            </button>
+
+            <button
+              type="button"
+              onClick={openUsbCamera}
+              aria-label="Try again"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-400 text-black"
+            >
+              <RetryIcon />
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="relative h-16 w-16">
+          <div className="absolute inset-0 rounded-full border border-white/10" />
+          <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-emerald-400 border-r-emerald-400/40" />
+          <div className="absolute inset-[10px] animate-pulse rounded-full bg-emerald-400/10" />
+        </div>
+      )}
+    </div>
+  );
+}
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-3 sm:p-4">
-      <div className="relative flex items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black">
+    <div className="p-3 sm:p-4">
+      <div className="relative flex items-center justify-center overflow-hidden bg-black">
         <video ref={videoRef} playsInline muted className="max-h-[65vh] w-full object-contain" />
         {!ready && !error && (
           <div className="absolute inset-0 flex items-center justify-center">
@@ -164,7 +178,7 @@ export default function Camera({ onCapture, onCancel }: Props) {
             <select
               value={deviceId}
               onChange={onSelect}
-              className="mt-4 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-neutral-200 outline-none focus:border-emerald-400/40"
+              className="mt-4 w-full rounded-xl px-4 py-2.5 text-sm text-neutral-200 outline-none focus:border-emerald-400/40"
             >
               {devices.map((d, i) => (
                 <option key={d.deviceId} value={d.deviceId} className="bg-neutral-900">
@@ -180,5 +194,40 @@ export default function Camera({ onCapture, onCancel }: Props) {
         </>
       )}
     </div>
+  );
+}
+
+function BackIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m15 18-6-6 6-6" />
+    </svg>
+  );
+}
+
+function RetryIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M3 12a9 9 0 1 0 3-6.7" />
+      <path d="M3 4v6h6" />
+    </svg>
   );
 }

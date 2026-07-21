@@ -71,7 +71,7 @@ export default function InstallPrompt() {
             className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-3"
             onClick={() => setShowSheet(false)}
           >
-            <div className="w-full max-w-md rounded-3xl border border-white/10 bg-neutral-950 p-6 text-center">
+            <div className="w-full max-w-md bg-neutral-950 p-6 text-center">
               <p className="text-sm font-medium text-neutral-100">Install VEINZ</p>
               <p className="mt-2 text-xs text-neutral-400">
                 Tap the Share icon in Safari, then choose &ldquo;Add to Home Screen&rdquo;.
