@@ -43,9 +43,9 @@ export default function Camera({ onCapture, onCancel }: Props) {
       } else if (res.exit_code === "user_canceled") {
         onCancel();
       } else if (res.exit_code === "exit_no_device") {
-        setError("No USB camera detected. Plug in your NIR camera over USB-C and try again.");
+        setError("No camera detected.");
       } else {
-        setError("Couldn't capture from the USB camera.");
+        setError("Couldn't capture from the camera.");
       }
     } catch (err) {
   const message =
@@ -120,9 +120,9 @@ export default function Camera({ onCapture, onCancel }: Props) {
       <div className="flex flex-col items-center rounded-3xl border border-white/10 bg-white/[0.02] px-6 py-16 text-center">
         {error ? (
           <>
-            <p className="mt-3 text-xs text-neutral-500">
+            {/* <p className="mt-3 text-xs text-neutral-500">
               Platform: {Capacitor.getPlatform()} | Plugin:{" "}{String(Capacitor.isPluginAvailable("UsbCamera"))}
-            </p>
+            </p> */}
             <p className="text-sm text-red-400">{error}</p>
             <div className="mt-6 flex justify-center gap-3">
               <button onClick={onCancel} className={btnGhost}>Back</button>
@@ -132,7 +132,7 @@ export default function Camera({ onCapture, onCancel }: Props) {
         ) : (
           <>
             <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/15 border-t-emerald-400" />
-            <p className="mt-5 text-sm text-neutral-400">Opening USB camera…</p>
+            <p className="mt-5 text-sm text-neutral-400">Loading…</p>
           </>
         )}
       </div>

@@ -49,7 +49,7 @@ export default function Home() {
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col">
       <header className="flex items-center justify-between">
-        <span className="text-sm font-semibold tracking-wide text-emerald-400">VEINZ</span>
+        {/* <span className="text-sm font-semibold tracking-wide text-emerald-400">VEINZ</span> */}
         <InstallPrompt />
       </header>
 
@@ -62,7 +62,7 @@ export default function Home() {
           <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-3 sm:p-4">
             <img src={previewUrl} alt="Captured frame" className="w-full rounded-2xl border border-white/10" />
             {error && <p className="mt-3 text-center text-sm text-red-400">{error}</p>}
-            <p className="mt-4 text-center text-sm text-neutral-400">Is this frame clear enough?</p>
+            {/* <p className="mt-4 text-center text-sm text-neutral-400">Is this frame clear enough?</p> */}
             <div className="mt-4 flex justify-center gap-3">
               <button onClick={() => setStage("camera")} className={btnGhost}>Retake</button>
               <button onClick={runPipeline} className={btnPrimary}>Use this photo</button>
@@ -88,9 +88,9 @@ export default function Home() {
 function Idle({ onStart }: { onStart: () => void }) {
   return (
     <div className="flex flex-col items-center rounded-3xl border border-white/10 bg-white/[0.02] px-6 py-16 text-center">
-      <h2 className="text-xl font-medium text-neutral-100">Scan a forearm</h2>
+      <h2 className="text-xl font-semibold tracking-wide text-emerald-400">VEINZ</h2>
       <p className="mt-2 max-w-sm text-sm text-neutral-400">
-        Start your NIR camera feed and capture a frame. Veins are detected and mapped automatically.
+        Short Sentence About APP
       </p>
       <button onClick={onStart} className={`${btnPrimary} mt-8`}>Start Camera</button>
     </div>

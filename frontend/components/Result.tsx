@@ -27,7 +27,7 @@ export default function Result({ data, onRestart }: Props) {
             className="w-full rounded-2xl border border-emerald-400/20"
           />
           <figcaption className="mt-2 text-center text-xs text-emerald-400/80">
-            {showMask ? "Vein mask" : "Veins detected"}
+            {showMask ? "Vein Mask" : "Detected Veins"}
           </figcaption>
         </figure>
       </div>
