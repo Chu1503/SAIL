@@ -1,5 +1,10 @@
 // Sends a captured image to the Python backend and returns the result image data URLs.
-export type ProcessResult = { original: string; overlay: string; mask: string };
+export type ProcessResult = {
+  original: string;
+  processed: string;
+  overlay: string;
+  mask: string;
+};
 
 const API_URL = (
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
@@ -49,7 +54,7 @@ export async function processImage(blob: Blob): Promise<ProcessResult> {
     throw new Error(result.error);
   }
 
-  if (!result.original || !result.overlay || !result.mask) {
+  if (!result.original || !result.processed || !result.overlay || !result.mask) {
     throw new Error("Backend response is missing image results");
   }
 

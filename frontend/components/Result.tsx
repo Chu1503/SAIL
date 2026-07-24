@@ -2,9 +2,15 @@
 
 import { useState } from "react";
 import type { ProcessResult } from "@/lib/api";
+import {
+  exportScans,
+  type ExportReceipt,
+  type ScanExport,
+} from "@/lib/exportResults";
 
 type Props = {
   data: ProcessResult;
+  scans: ScanExport[];
   onHome: () => void;
   onRestart: () => void;
   // onNewScan: () => void;
@@ -12,10 +18,36 @@ type Props = {
 
 export default function Result({
   data,
+  scans,
   onHome,
   onRestart,
 }: Props) {
   const [showMask, setShowMask] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState("");
+  const [saveError, setSaveError] = useState("");
+
+  async function saveImages() {
+    setSaving(true);
+    setSaveMessage("");
+    setSaveError("");
+
+    try {
+      const receipt: ExportReceipt = await exportScans(scans);
+      setSaveMessage(
+        `${receipt.fileCount} files saved to ${receipt.location}`
+      );
+    } catch (error) {
+      console.error("Image export failed:", error);
+      setSaveError(
+        error instanceof Error
+          ? error.message
+          : "Images could not be saved. Please try again."
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
 
   return (
     <section className="flex min-h-[calc(100dvh-3rem)] flex-col">
@@ -34,14 +66,14 @@ export default function Result({
         <figure>
           <div className="bg-neutral-950">
             <img
-              src={data.original}
-              alt="Original capture"
+              src={data.processed}
+              alt="Post-processed scan"
               className="max-h-[55dvh] w-full object-contain"
             />
           </div>
 
           <figcaption className="mt-3 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-600">
-            Input
+            Post processed
           </figcaption>
         </figure>
 
@@ -90,6 +122,42 @@ export default function Result({
             New scan
           </span>
         </div>
+
+        <div className="flex flex-col items-center gap-2">
+          <button
+            type="button"
+            onClick={saveImages}
+            disabled={saving}
+            aria-label={`Save ${scans.length} scan${scans.length === 1 ? "" : "s"}`}
+            className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 transition active:scale-95 disabled:cursor-wait disabled:opacity-50"
+          >
+            {saving ? (
+              <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-emerald-400" />
+            ) : (
+              <SaveIcon />
+            )}
+          </button>
+
+          <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-600">
+            Save images
+          </span>
+        </div>
+      </div>
+
+      <div
+        aria-live="polite"
+        className="min-h-6 pt-3 text-center text-xs text-neutral-500"
+      >
+        {saveMessage || saveError ? (
+          <span className={saveError ? "text-red-400" : "text-emerald-400"}>
+            {saveError || saveMessage}
+          </span>
+        ) : (
+          <span>
+            {scans.length} scan{scans.length === 1 ? "" : "s"} ·{" "}
+            {scans.length * 3} files
+          </span>
+        )}
       </div>
     </section>
   );
@@ -148,6 +216,26 @@ function ScanIcon() {
       <path d="M20 16v3a1 1 0 0 1-1 1h-3" />
       <path d="M8 20H5a1 1 0 0 1-1-1v-3" />
       <path d="M7 12h10" />
+    </svg>
+  );
+}
+
+function SaveIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 3v12" />
+      <path d="m7 10 5 5 5-5" />
+      <path d="M5 21h14a2 2 0 0 0 2-2v-3" />
+      <path d="M3 16v3a2 2 0 0 0 2 2" />
     </svg>
   );
 }

@@ -50,12 +50,13 @@ async def process(file: UploadFile = File(...)):
             detail="Could not decode uploaded image",
         )
 
-    original, detection_base, display_base = enhance(img)
+    original, detection_base, processed = enhance(img)
     mask = predict(detection_base)
-    result = make_overlay(display_base, mask)
+    result = make_overlay(processed, mask)
 
     return {
         "original": _to_data_url(original),
+        "processed": _to_data_url(processed),
         "overlay": _to_data_url(result),
         "mask": _to_data_url(mask),
     }

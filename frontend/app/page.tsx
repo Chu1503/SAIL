@@ -6,24 +6,31 @@ import Camera from "@/components/Camera";
 import Result from "@/components/Result";
 import InstallPrompt from "@/components/InstallPrompt";
 import { processImage, type ProcessResult } from "@/lib/api";
+import type { ScanExport } from "@/lib/exportResults";
 
 type Stage = "idle" | "camera" | "processing" | "result";
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("idle");
   const [result, setResult] = useState<ProcessResult | null>(null);
+  const [completedScans, setCompletedScans] = useState<ScanExport[]>([]);
   const [error, setError] = useState("");
 
   function goHome() {
     setStage("idle");
     setResult(null);
+    setCompletedScans([]);
     setError("");
   }
 
   function openCamera() {
-    setResult(null);
     setError("");
     setStage("camera");
+  }
+
+  function cancelCamera() {
+    setError("");
+    setStage(result ? "result" : "idle");
   }
 
   async function handleCapture(capturedBlob: Blob) {
@@ -33,6 +40,10 @@ export default function Home() {
     try {
       const processedResult = await processImage(capturedBlob);
       setResult(processedResult);
+      setCompletedScans((current) => [
+        ...current,
+        { capturedAt: new Date().toISOString(), result: processedResult },
+      ]);
       setStage("result");
     } catch (err) {
       console.error("Processing failed:", err);
@@ -58,7 +69,7 @@ export default function Home() {
       )}
 
       {stage === "camera" && (
-        <Camera onCapture={handleCapture} onCancel={goHome} />
+        <Camera onCapture={handleCapture} onCancel={cancelCamera} />
       )}
 
       {stage === "processing" && <LoadingScreen />}
@@ -66,6 +77,7 @@ export default function Home() {
       {stage === "result" && result && (
         <Result
           data={result}
+          scans={completedScans}
           onHome={goHome}
           onRestart={openCamera}
         />
