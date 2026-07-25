@@ -22,7 +22,7 @@ const imageFiles: Array<{
 }> = [
   { name: "01_Post_Processed.png", getData: (result) => result.processed },
   { name: "02_Vein_Overlay.png", getData: (result) => result.overlay },
-  { name: "03_Vein_Mask.png", getData: (result) => result.mask },
+  { name: "03_Vein_Graph_Mask.png", getData: (result) => result.graph },
 ];
 
 function compactTimestamp(value: string | Date) {

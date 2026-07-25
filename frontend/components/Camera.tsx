@@ -85,12 +85,16 @@ export default function Camera({ onCapture, onCancel }: Props) {
   }, []);
 
   useEffect(() => {
-    if (native) {
-      openUsbCamera();
-      return;
-    }
-    start();
+    const startup = window.setTimeout(() => {
+      if (native) {
+        void openUsbCamera();
+      } else {
+        void start();
+      }
+    }, 0);
+
     return () => {
+      window.clearTimeout(startup);
       streamRef.current?.getTracks().forEach((t) => t.stop());
     };
   }, [native, start, openUsbCamera]);
@@ -157,6 +161,13 @@ export default function Camera({ onCapture, onCancel }: Props) {
     <div className="p-3 sm:p-4">
       <div className="relative flex items-center justify-center overflow-hidden bg-black">
         <video ref={videoRef} playsInline muted className="max-h-[65vh] w-full object-contain" />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-[12%_5%] rounded-[50%] border border-emerald-300/35 shadow-[0_0_35px_rgba(52,211,153,0.08)_inset]"
+        />
+        <p className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-[9px] font-medium uppercase tracking-[0.18em] text-emerald-200/70">
+          Center forearm inside guide
+        </p>
         {!ready && !error && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/15 border-t-emerald-400" />

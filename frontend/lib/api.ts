@@ -3,7 +3,17 @@ export type ProcessResult = {
   original: string;
   processed: string;
   overlay: string;
-  mask: string;
+  graph: string;
+  analysis: {
+    signalQuality: number;
+    pathConfidence: number;
+    vesselCoverage: number;
+    connectedVessels: number;
+    segments: number;
+    endpoints: number;
+    junctions: number;
+    warnings: string[];
+  };
 };
 
 const API_URL = (
@@ -54,7 +64,13 @@ export async function processImage(blob: Blob): Promise<ProcessResult> {
     throw new Error(result.error);
   }
 
-  if (!result.original || !result.processed || !result.overlay || !result.mask) {
+  if (
+    !result.original ||
+    !result.processed ||
+    !result.overlay ||
+    !result.graph ||
+    !result.analysis
+  ) {
     throw new Error("Backend response is missing image results");
   }
 

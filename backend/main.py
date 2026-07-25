@@ -1,4 +1,4 @@
-# FastAPI server: receives a captured image, runs preprocessing + model + overlay, returns result images as data URLs.
+# FastAPI server for training-free superficial-vessel visualization.
 import base64
 
 import cv2
@@ -6,9 +6,9 @@ import numpy as np
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from preprocessing import enhance
-from model import predict
-from overlay import make_overlay
+from preprocessing import prepare_image
+from vessel_detection import detect_vessel_graph
+from overlay import make_graph_mask, make_overlay
 
 app = FastAPI(title="VEINZ API")
 
@@ -30,6 +30,8 @@ app.add_middleware(
 
 def _to_data_url(img):
     ok, buf = cv2.imencode(".png", img)
+    if not ok:
+        raise HTTPException(status_code=500, detail="Could not encode result image")
     b64 = base64.b64encode(buf).decode("ascii")
     return f"data:image/png;base64,{b64}"
 
@@ -50,13 +52,42 @@ async def process(file: UploadFile = File(...)):
             detail="Could not decode uploaded image",
         )
 
-    original, detection_base, processed = enhance(img)
-    mask = predict(detection_base)
-    result = make_overlay(processed, mask)
+    prepared = prepare_image(img)
+    vessels = detect_vessel_graph(
+        prepared.enhanced,
+        prepared.corrected,
+        prepared.analysis_mask,
+    )
+    overlay = make_overlay(
+        prepared.original,
+        vessels.skeleton,
+        vessels.junctions,
+    )
+    graph = make_graph_mask(
+        vessels.skeleton,
+        vessels.endpoints,
+        vessels.junctions,
+    )
+
+    warnings = list(prepared.warnings)
+    if vessels.connected_vessels == 0:
+        warnings.append("No reliable vessel paths detected")
+    elif vessels.confidence < 0.30:
+        warnings.append("Detected paths have weak visual support")
 
     return {
-        "original": _to_data_url(original),
-        "processed": _to_data_url(processed),
-        "overlay": _to_data_url(result),
-        "mask": _to_data_url(mask),
+        "original": _to_data_url(prepared.original),
+        "processed": _to_data_url(prepared.enhanced),
+        "overlay": _to_data_url(overlay),
+        "graph": _to_data_url(graph),
+        "analysis": {
+            "signalQuality": round(prepared.signal_quality, 3),
+            "pathConfidence": round(vessels.confidence, 3),
+            "vesselCoverage": round(vessels.coverage, 5),
+            "connectedVessels": vessels.connected_vessels,
+            "segments": vessels.segment_count,
+            "endpoints": int(vessels.endpoints.sum()),
+            "junctions": int(vessels.junctions.sum()),
+            "warnings": warnings,
+        },
     }
