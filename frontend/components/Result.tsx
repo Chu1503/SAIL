@@ -177,21 +177,12 @@ export default function Result({
         aria-live="polite"
         className="min-h-6 pt-3 text-center text-xs text-neutral-500"
       >
-        {saveMessage || saveError ? (
+        {(saveMessage || saveError) && (
           <span className={saveError ? "text-red-400" : "text-emerald-400"}>
             {saveError || saveMessage}
           </span>
-        ) : (
-          <span>
-            {scans.length} scan{scans.length === 1 ? "" : "s"} ·{" "}
-            {scans.length * 3} files
-          </span>
         )}
       </div>
-
-      <p className="text-center text-[10px] leading-4 text-neutral-700">
-        Research visualization only · Not a needle-placement recommendation
-      </p>
     </section>
   );
 }

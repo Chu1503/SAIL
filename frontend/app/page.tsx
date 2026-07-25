@@ -226,9 +226,6 @@ function Idle({
           />
         </label>
 
-        <p className="mt-3 text-[10px] uppercase tracking-[0.16em] text-neutral-700">
-          Uses the same analysis as camera capture
-        </p>
       </div>
     </section>
   );
