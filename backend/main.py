@@ -173,6 +173,20 @@ def _fallback_result(img, error):
                 "method": "full-frame-fallback",
                 "confidence": 0.0,
             },
+            "pipeline": {
+                "armIsolation": {
+                    "name": "No arm-isolation model result",
+                    "tier": "Fallback",
+                    "runtime": "CPU",
+                    "status": "fallback",
+                },
+                "veinExtraction": {
+                    "name": "OpenCV black-hat",
+                    "tier": "Fallback",
+                    "runtime": "CPU",
+                    "status": "fallback",
+                },
+            },
         },
     }
 
@@ -237,6 +251,24 @@ async def process(file: UploadFile = File(...)):
             "armSegmentation": {
                 "method": prepared.segmentation_method,
                 "confidence": round(prepared.segmentation_confidence, 3),
+            },
+            "pipeline": {
+                "armIsolation": {
+                    "name": prepared.segmentation_model_name,
+                    "tier": prepared.segmentation_model_tier,
+                    "runtime": prepared.segmentation_runtime,
+                    "status": (
+                        "fallback"
+                        if prepared.segmentation_fallback_used
+                        else "primary"
+                    ),
+                },
+                "veinExtraction": {
+                    "name": "Frangi + Sato + multiscale black-hat",
+                    "tier": "Training-free",
+                    "runtime": "CPU",
+                    "status": "primary",
+                },
             },
         },
     }

@@ -1,7 +1,5 @@
 """Memory-safe, model-guided forearm isolation for close-range NIR frames."""
 
-import os
-import tempfile
 import logging
 from dataclasses import dataclass
 from pathlib import Path
@@ -10,29 +8,18 @@ from threading import Lock
 import cv2
 import numpy as np
 
-# MediaPipe imports matplotlib transitively. Keep its caches in a writable,
-# disposable location on hosted workers instead of depending on a home folder.
-os.environ.setdefault(
-    "MPLCONFIGDIR",
-    str(Path(tempfile.gettempdir()) / "veinz-matplotlib"),
-)
-os.environ.setdefault(
-    "XDG_CACHE_HOME",
-    str(Path(tempfile.gettempdir()) / "veinz-cache"),
-)
-
 try:
-    import mediapipe as mp
-    from mediapipe.tasks.python.components.containers.keypoint import (
-        NormalizedKeypoint,
-    )
+    from ai_edge_litert.interpreter import Interpreter
 except ImportError:
-    mp = None
-    NormalizedKeypoint = None
+    try:
+        from tflite_runtime.interpreter import Interpreter
+    except ImportError:
+        Interpreter = None
 
 
 MODEL_PATH = Path(__file__).resolve().parent / "models" / "magic_touch.tflite"
 MODEL_INPUT_LONG_EDGE = 512
+MODEL_TENSOR_SIZE = 512
 _SEGMENTER = None
 _SEGMENTER_UNAVAILABLE = False
 _SEGMENTER_LOCK = Lock()
@@ -44,36 +31,92 @@ class ArmSegmentation:
     mask: np.ndarray
     confidence: float
     method: str
+    model_name: str
+    model_tier: str
+    runtime: str
+    fallback_used: bool
 
 
 def _segmenter():
     global _SEGMENTER, _SEGMENTER_UNAVAILABLE
     if _SEGMENTER is not None:
         return _SEGMENTER
-    if _SEGMENTER_UNAVAILABLE or mp is None or not MODEL_PATH.exists():
+    if _SEGMENTER_UNAVAILABLE or Interpreter is None or not MODEL_PATH.exists():
         return None
 
     with _SEGMENTER_LOCK:
         if _SEGMENTER is None:
             try:
-                options = mp.tasks.vision.InteractiveSegmenterOptions(
-                    base_options=mp.tasks.BaseOptions(
-                        model_asset_path=str(MODEL_PATH),
-                        delegate=mp.tasks.BaseOptions.Delegate.CPU,
-                    ),
-                    output_confidence_masks=True,
-                    output_category_mask=True,
+                interpreter = Interpreter(
+                    model_path=str(MODEL_PATH),
+                    num_threads=4,
                 )
+                interpreter.allocate_tensors()
+                input_detail = interpreter.get_input_details()[0]
+                output_detail = interpreter.get_output_details()[0]
+                expected_input = (1, MODEL_TENSOR_SIZE, MODEL_TENSOR_SIZE, 4)
+                if tuple(input_detail["shape"]) != expected_input:
+                    raise RuntimeError(
+                        "Unexpected MagicTouch input shape "
+                        f"{tuple(input_detail['shape'])}"
+                    )
                 _SEGMENTER = (
-                    mp.tasks.vision.InteractiveSegmenter.create_from_options(options)
+                    interpreter,
+                    int(input_detail["index"]),
+                    int(output_detail["index"]),
                 )
             except Exception:
                 _SEGMENTER_UNAVAILABLE = True
                 logger.exception(
-                    "MediaPipe could not initialize; using geometric arm fallback"
+                    "LiteRT could not initialize MagicTouch; "
+                    "arm isolation will use the full image"
                 )
                 return None
     return _SEGMENTER
+
+
+def _predict_foreground(image_bgr, normalized_x):
+    """Run MagicTouch directly, avoiding MediaPipe's headless GPU/GL runtime."""
+    segmenter = _segmenter()
+    if segmenter is None:
+        return None
+
+    interpreter, input_index, output_index = segmenter
+    rgb = cv2.cvtColor(
+        cv2.resize(
+            image_bgr,
+            (MODEL_TENSOR_SIZE, MODEL_TENSOR_SIZE),
+            interpolation=cv2.INTER_LINEAR,
+        ),
+        cv2.COLOR_BGR2RGB,
+    )
+    model_input = np.zeros(
+        (1, MODEL_TENSOR_SIZE, MODEL_TENSOR_SIZE, 4),
+        dtype=np.float32,
+    )
+    model_input[0, :, :, :3] = rgb.astype(np.float32) / 255.0
+
+    guide = np.zeros(
+        (MODEL_TENSOR_SIZE, MODEL_TENSOR_SIZE),
+        dtype=np.float32,
+    )
+    guide_x = int(round(normalized_x * (MODEL_TENSOR_SIZE - 1)))
+    guide_y = int(round(0.50 * (MODEL_TENSOR_SIZE - 1)))
+    cv2.circle(guide, (guide_x, guide_y), 1, 1.0, -1)
+    model_input[0, :, :, 3] = guide
+
+    with _SEGMENTER_LOCK:
+        interpreter.set_tensor(input_index, model_input)
+        interpreter.invoke()
+        prediction = interpreter.get_tensor(output_index).copy()
+
+    foreground = np.squeeze(prediction).astype(np.float32)
+    height, width = image_bgr.shape[:2]
+    return cv2.resize(
+        foreground,
+        (width, height),
+        interpolation=cv2.INTER_LINEAR,
+    )
 
 
 def _component_at(mask, point):
@@ -125,41 +168,32 @@ def _broad_candidate_score(mask, confidence):
 
 
 def _model_arm_mask(image_bgr):
-    """Prompt the lightweight object model on both sides of the frame center."""
-    segmenter = _segmenter()
-    if segmenter is None:
+    """Prompt the lightweight model at the center and two flanking locations."""
+    if _segmenter() is None:
         return None, None, 0.0
 
     height, width = image_bgr.shape[:2]
-    rgb = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
-    media_image = mp.Image(
-        image_format=mp.ImageFormat.SRGB,
-        data=rgb,
-    )
-    roi_type = mp.tasks.vision.InteractiveSegmenterRegionOfInterest
 
     best_mask = None
     best_point = None
     best_confidence = 0.0
     best_score = -1e6
 
-    for normalized_x in (0.35, 0.65):
+    for normalized_x in (0.50, 0.35, 0.65):
         point = (round(normalized_x * width), round(0.50 * height))
-        roi = roi_type(
-            format=roi_type.Format.KEYPOINT,
-            keypoint=NormalizedKeypoint(x=normalized_x, y=0.50),
-        )
 
         try:
-            with _SEGMENTER_LOCK:
-                result = segmenter.segment(media_image, roi)
+            confidence_map = _predict_foreground(image_bgr, normalized_x)
         except Exception:
+            logger.exception(
+                "MagicTouch inference failed for prompt x=%.2f",
+                normalized_x,
+            )
+            continue
+        if confidence_map is None:
             continue
 
-        category = np.squeeze(result.category_mask.numpy_view())
-        # MagicTouch encodes the prompted foreground as category 0.
-        candidate = _component_at(category == 0, point)
-        confidence_map = np.squeeze(result.confidence_masks[0].numpy_view())
+        candidate = _component_at(confidence_map >= 0.50, point)
         confidence = (
             float(np.mean(confidence_map[candidate > 0]))
             if np.any(candidate)
@@ -172,6 +206,8 @@ def _model_arm_mask(image_bgr):
             best_confidence = confidence
             best_score = score
 
+    if best_score <= -1e5:
+        return None, None, 0.0
     return best_mask, best_point, best_confidence
 
 
@@ -246,65 +282,8 @@ def _refine_broad_mask(image_bgr, broad, point):
     return refined * 255
 
 
-def _geometric_fallback(image_bgr):
-    """Keep analyzing a centered arm when the hosted model is unavailable."""
-    height, width = image_bgr.shape[:2]
-    gray = cv2.GaussianBlur(
-        cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY),
-        (0, 0),
-        sigmaX=3.0,
-    )
-    horizontal_band = max(3, round(height * 0.04))
-    vertical_band = max(3, round(width * 0.04))
-    horizontal_profile = np.median(
-        gray[
-            max(0, height // 2 - horizontal_band):
-            min(height, height // 2 + horizontal_band + 1),
-            :,
-        ],
-        axis=0,
-    )
-    vertical_profile = np.median(
-        gray[
-            :,
-            max(0, width // 2 - vertical_band):
-            min(width, width // 2 + vertical_band + 1),
-        ],
-        axis=1,
-    )
-    horizontal_change = float(
-        np.mean(np.abs(np.diff(horizontal_profile.astype(np.float32))))
-    )
-    vertical_change = float(
-        np.mean(np.abs(np.diff(vertical_profile.astype(np.float32))))
-    )
-
-    mask = np.zeros((height, width), dtype=np.uint8)
-    if horizontal_change <= vertical_change:
-        axes = (
-            max(2, round(width * 0.49)),
-            max(2, round(height * 0.22)),
-        )
-    else:
-        axes = (
-            max(2, round(width * 0.22)),
-            max(2, round(height * 0.49)),
-        )
-    cv2.ellipse(
-        mask,
-        (width // 2, height // 2),
-        axes,
-        0,
-        0,
-        360,
-        255,
-        -1,
-    )
-    return mask
-
-
 def segment_arm(image_bgr):
-    """Return a full-resolution mask; fall back to the complete input frame."""
+    """Return a full-resolution arm mask without any guide-shaped fallback."""
     height, width = image_bgr.shape[:2]
     scale = min(1.0, MODEL_INPUT_LONG_EDGE / max(height, width))
     working = cv2.resize(
@@ -316,29 +295,43 @@ def segment_arm(image_bgr):
     try:
         broad, point, confidence = _model_arm_mask(working)
     except Exception:
-        # Some headless hosts cannot initialize MediaPipe's vision runtime.
-        # Segmentation is an enhancement, not a reason to abort vessel analysis.
         logger.exception(
             "Arm model unavailable; continuing with the complete input frame"
         )
         broad, point, confidence = None, None, 0.0
     if broad is None or point is None:
-        mask = _geometric_fallback(working)
-        method = "geometric-fallback"
+        mask = np.full(working.shape[:2], 255, dtype=np.uint8)
+        method = "full-image-no-segmentation"
         confidence = 0.0
+        model_name = "No arm-isolation model result"
+        model_tier = "Fallback"
+        runtime = "CPU"
+        fallback_used = True
     else:
         mask = _refine_broad_mask(working, broad, point)
-        method = "magic-touch-refined"
+        method = "magic-touch-litert-refined"
+        model_name = "Google MagicTouch"
+        model_tier = "Lightweight"
+        runtime = "LiteRT CPU"
+        fallback_used = False
 
     mask = cv2.resize(mask, (width, height), interpolation=cv2.INTER_NEAREST)
     mask = (mask > 0).astype(np.uint8) * 255
     if float(np.mean(mask > 0)) < 0.025:
-        mask = _geometric_fallback(image_bgr)
-        method = "geometric-fallback"
+        mask = np.full((height, width), 255, dtype=np.uint8)
+        method = "full-image-invalid-model-mask"
         confidence = 0.0
+        model_name = "No arm-isolation model result"
+        model_tier = "Fallback"
+        runtime = "CPU"
+        fallback_used = True
 
     return ArmSegmentation(
         mask=mask,
         confidence=float(np.clip(confidence, 0.0, 1.0)),
         method=method,
+        model_name=model_name,
+        model_tier=model_tier,
+        runtime=runtime,
+        fallback_used=fallback_used,
     )

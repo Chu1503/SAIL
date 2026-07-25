@@ -26,6 +26,18 @@ export default function Result({
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
   const [saveError, setSaveError] = useState("");
+  const armIsolation = data.analysis.pipeline?.armIsolation ?? {
+    name: data.analysis.armSegmentation?.method ?? "Unknown",
+    tier: "Legacy response",
+    runtime: "CPU",
+    status: "fallback" as const,
+  };
+  const veinExtraction = data.analysis.pipeline?.veinExtraction ?? {
+    name: "Frangi + Sato + multiscale black-hat",
+    tier: "Training-free",
+    runtime: "CPU",
+    status: "primary" as const,
+  };
 
   async function saveImages() {
     setSaving(true);
@@ -90,6 +102,23 @@ export default function Result({
             {showGraph ? "Vein graph" : "Vein overlay"}
           </figcaption>
         </figure>
+      </div>
+
+      <div className="mx-auto mt-5 grid w-full max-w-3xl gap-px overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.08] sm:grid-cols-2">
+        <PipelineStage
+          label="Arm isolation"
+          name={armIsolation.name}
+          tier={armIsolation.tier}
+          runtime={armIsolation.runtime}
+          fallback={armIsolation.status === "fallback"}
+        />
+        <PipelineStage
+          label="Vein extraction"
+          name={veinExtraction.name}
+          tier={veinExtraction.tier}
+          runtime={veinExtraction.runtime}
+          fallback={veinExtraction.status === "fallback"}
+        />
       </div>
 
       <div className="flex items-end justify-center gap-8 pt-5">
@@ -164,6 +193,45 @@ export default function Result({
         Research visualization only · Not a needle-placement recommendation
       </p>
     </section>
+  );
+}
+
+function PipelineStage({
+  label,
+  name,
+  tier,
+  runtime,
+  fallback,
+}: {
+  label: string;
+  name: string;
+  tier: string;
+  runtime: string;
+  fallback: boolean;
+}) {
+  return (
+    <div className="bg-neutral-950/95 px-4 py-3">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-[9px] font-medium uppercase tracking-[0.18em] text-neutral-600">
+          {label}
+        </span>
+        <span
+          className={
+            fallback
+              ? "rounded-full bg-amber-400/10 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[0.14em] text-amber-300"
+              : "rounded-full bg-emerald-400/10 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[0.14em] text-emerald-300"
+          }
+        >
+          {fallback ? "Fallback used" : "Primary"}
+        </span>
+      </div>
+      <p className="mt-1.5 truncate text-xs font-medium text-neutral-200">
+        {name}
+      </p>
+      <p className="mt-0.5 text-[10px] text-neutral-600">
+        {tier} · {runtime}
+      </p>
+    </div>
   );
 }
 

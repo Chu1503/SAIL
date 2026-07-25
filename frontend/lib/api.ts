@@ -1,4 +1,11 @@
 // Sends a captured image to the Python backend and returns the result image data URLs.
+export type PipelineStage = {
+  name: string;
+  tier: string;
+  runtime: string;
+  status: "primary" | "fallback";
+};
+
 export type ProcessResult = {
   original: string;
   processed: string;
@@ -16,6 +23,10 @@ export type ProcessResult = {
     armSegmentation?: {
       method: string;
       confidence: number;
+    };
+    pipeline?: {
+      armIsolation: PipelineStage;
+      veinExtraction: PipelineStage;
     };
   };
 };

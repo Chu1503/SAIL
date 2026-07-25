@@ -22,6 +22,10 @@ class PreparedImage:
     signal_quality: float
     segmentation_confidence: float
     segmentation_method: str
+    segmentation_model_name: str
+    segmentation_model_tier: str
+    segmentation_runtime: str
+    segmentation_fallback_used: bool
     warnings: tuple[str, ...]
 
 
@@ -184,5 +188,9 @@ def prepare_image(image_bgr):
         signal_quality=quality,
         segmentation_confidence=segmentation.confidence,
         segmentation_method=segmentation.method,
+        segmentation_model_name=segmentation.model_name,
+        segmentation_model_tier=segmentation.model_tier,
+        segmentation_runtime=segmentation.runtime,
+        segmentation_fallback_used=segmentation.fallback_used,
         warnings=warnings,
     )
