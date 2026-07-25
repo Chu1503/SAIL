@@ -13,6 +13,10 @@ export type ProcessResult = {
     endpoints: number;
     junctions: number;
     warnings: string[];
+    armSegmentation?: {
+      method: string;
+      confidence: number;
+    };
   };
 };
 

@@ -9,7 +9,7 @@ def _scaled_radius(shape, fraction, minimum):
 
 
 def make_overlay(original_bgr, skeleton, junctions):
-    """Draw a restrained neon centerline overlay on the original input."""
+    """Draw a clean neon centerline overlay on the isolated input."""
     base = original_bgr.copy()
     line_radius = _scaled_radius(base.shape[:2], 0.0022, 1)
     core = cv2.dilate(
@@ -28,12 +28,6 @@ def make_overlay(original_bgr, skeleton, junctions):
 
     output = base.astype(np.float32) * (1.0 - glow_alpha) + green * glow_alpha
     output[core > 0] = (62, 255, 104)
-
-    node_radius = _scaled_radius(base.shape[:2], 0.005, 3)
-    for y, x in np.argwhere(junctions):
-        cv2.circle(output, (int(x), int(y)), node_radius + 2, (14, 20, 18), -1)
-        cv2.circle(output, (int(x), int(y)), node_radius, (0, 210, 255), -1)
-        cv2.circle(output, (int(x), int(y)), max(1, node_radius // 3), (255, 255, 255), -1)
 
     return np.clip(output, 0, 255).astype(np.uint8)
 

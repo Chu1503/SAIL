@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import cv2
 import numpy as np
-from skimage.filters import apply_hysteresis_threshold, frangi, sato
+from skimage.filters import apply_hysteresis_threshold, frangi, meijering, sato
 from skimage.morphology import remove_small_holes, remove_small_objects, skeletonize
 
 
@@ -101,7 +101,7 @@ def _prune_short_spurs(skeleton, minimum_length):
     return work
 
 
-def _filter_vessel_shapes(mask, response, minimum_length):
+def _filter_vessel_shapes(mask, response, minimum_length, maximum_width):
     labels_count, labels, _, _ = cv2.connectedComponentsWithStats(
         mask.astype(np.uint8), connectivity=8
     )
@@ -131,7 +131,7 @@ def _filter_vessel_shapes(mask, response, minimum_length):
         )
         if endpoint_count == 0:
             continue
-        if junction_count > max(2, round(length / 90)):
+        if junction_count > max(4, round(length / 55)):
             continue
 
         ys, xs = np.where(centerline)
@@ -150,11 +150,9 @@ def _filter_vessel_shapes(mask, response, minimum_length):
         # Broad blobs and near-circular highlights are not vessel-like. A
         # branching component may have modest global elongation, so strong
         # response can compensate for that geometric test.
-        if median_width > 26.0:
+        if median_width > maximum_width:
             continue
-        if elongation > 30.0:
-            continue
-        if elongation < 1.35 and mean_response < 0.48:
+        if elongation < 1.10 and mean_response < 0.34:
             continue
         kept |= component
 
@@ -172,14 +170,14 @@ def _cluster_centers(pixel_mask):
     return points
 
 
-def detect_vessel_graph(enhanced, corrected, analysis_mask):
+def detect_vessel_graph(enhanced, corrected, blackhat, analysis_mask):
     valid = analysis_mask > 0
     image = enhanced.astype(np.float32) / 255.0
 
     # OV9281/NIR veins should be dark ridges. The two Hessian measures respond
     # differently at bifurcations, so their fusion is more stable than either
     # one alone without requiring learned weights.
-    scales = (1.5, 2.2, 3.2, 4.6, 6.4, 8.5)
+    scales = (1.1, 1.6, 2.3, 3.3, 4.7, 6.6, 9.0, 12.0)
     frangi_response = frangi(
         image,
         sigmas=scales,
@@ -188,11 +186,14 @@ def detect_vessel_graph(enhanced, corrected, analysis_mask):
         black_ridges=True,
     )
     sato_response = sato(image, sigmas=scales, black_ridges=True)
+    meijering_response = meijering(image, sigmas=scales, black_ridges=True)
     frangi_response = np.nan_to_num(frangi_response)
     sato_response = np.nan_to_num(sato_response)
+    meijering_response = np.nan_to_num(meijering_response)
 
     frangi_norm = _normalize_response(frangi_response, valid)
     sato_norm = _normalize_response(sato_response, valid)
+    meijering_norm = _normalize_response(meijering_response, valid)
 
     local_background = cv2.GaussianBlur(
         corrected.astype(np.float32), (0, 0), sigmaX=7.0
@@ -205,11 +206,22 @@ def detect_vessel_graph(enhanced, corrected, analysis_mask):
     gradient = cv2.magnitude(sobel_x, sobel_y)
     gradient_norm = _normalize_response(gradient, valid)
 
-    tubular = np.maximum(frangi_norm, 0.78 * sato_norm)
-    response = tubular * (0.55 + 0.45 * dark_norm)
-    # A vessel response should sit near the center of a dark valley. Strong
-    # first-order gradients are more likely object/background boundaries.
-    response *= 0.25 + 0.75 * (1.0 - gradient_norm)
+    blackhat_norm = blackhat.astype(np.float32) / 255.0
+    blackhat_norm *= valid.astype(np.float32)
+
+    tubular = np.maximum.reduce(
+        (frangi_norm, 0.82 * sato_norm, 0.88 * meijering_norm)
+    )
+    response = (
+        0.50 * tubular
+        + 0.32 * blackhat_norm
+        + 0.18 * dark_norm
+    )
+    # Only the very strongest first-order edges are down-weighted. The learned
+    # arm boundary and inset mask already remove background edges, so retaining
+    # softer gradients materially improves sensitivity to faint branches.
+    edge_penalty = np.clip((gradient_norm - 0.78) / 0.22, 0.0, 1.0)
+    response *= 1.0 - 0.55 * edge_penalty
     response *= valid.astype(np.float32)
 
     values = response[valid & (response > 0)]
@@ -217,8 +229,8 @@ def detect_vessel_graph(enhanced, corrected, analysis_mask):
         empty = np.zeros(response.shape, dtype=bool)
         return VesselGraph(response, empty, empty, empty, empty, 0, 0, 0.0, 0.0)
 
-    high = max(0.24, float(np.percentile(values, 91.0)))
-    low = max(0.11, high * 0.48)
+    high = max(0.12, float(np.percentile(values, 76.0)))
+    low = max(0.038, high * 0.30)
     candidates = apply_hysteresis_threshold(response, low, high)
     candidates &= valid
 
@@ -229,14 +241,44 @@ def detect_vessel_graph(enhanced, corrected, analysis_mask):
     ).astype(bool)
 
     diagonal = float(np.hypot(*enhanced.shape))
-    minimum_area = max(28, round(diagonal * 0.018))
-    minimum_length = max(36, round(diagonal * 0.035))
+    minimum_area = max(7, round(diagonal * 0.003))
+    minimum_length = max(10, round(diagonal * 0.006))
     candidates = remove_small_objects(candidates, min_size=minimum_area)
     candidates = remove_small_holes(candidates, area_threshold=max(12, minimum_area // 2))
-    region_mask = _filter_vessel_shapes(candidates, response, minimum_length)
+    maximum_width = max(18.0, min(enhanced.shape) * 0.065)
+    region_mask = _filter_vessel_shapes(
+        candidates,
+        response,
+        minimum_length,
+        maximum_width,
+    )
+
+    # The multiscale black-hat map preserves low-contrast vessels that may not
+    # have a textbook Hessian profile. Hysteresis grows only structures attached
+    # to a strong dark-line seed, giving the requested high-recall map without
+    # reintroducing anything outside the arm.
+    blackhat_values = blackhat_norm[valid]
+    blackhat_low = float(np.percentile(blackhat_values, 80.0))
+    blackhat_high = float(np.percentile(blackhat_values, 90.0))
+    long_vessels = apply_hysteresis_threshold(
+        blackhat_norm,
+        blackhat_low,
+        blackhat_high,
+    )
+    long_vessels &= valid
+    long_vessels = cv2.morphologyEx(
+        long_vessels.astype(np.uint8),
+        cv2.MORPH_CLOSE,
+        cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5)),
+    ).astype(bool)
+    long_vessels = remove_small_objects(
+        long_vessels,
+        min_size=max(24, round(diagonal * 0.015)),
+    )
+    region_mask |= long_vessels
 
     skeleton = skeletonize(region_mask)
-    skeleton = _prune_short_spurs(skeleton, max(9, round(diagonal * 0.009)))
+    skeleton = _prune_short_spurs(skeleton, max(5, round(diagonal * 0.004)))
 
     # Rebuild the region mask from only components whose final graph survived.
     graph_labels_count, graph_labels = cv2.connectedComponents(

@@ -56,6 +56,7 @@ async def process(file: UploadFile = File(...)):
     vessels = detect_vessel_graph(
         prepared.enhanced,
         prepared.corrected,
+        prepared.vessel_enhanced,
         prepared.analysis_mask,
     )
     overlay = make_overlay(
@@ -89,5 +90,9 @@ async def process(file: UploadFile = File(...)):
             "endpoints": int(vessels.endpoints.sum()),
             "junctions": int(vessels.junctions.sum()),
             "warnings": warnings,
+            "armSegmentation": {
+                "method": prepared.segmentation_method,
+                "confidence": round(prepared.segmentation_confidence, 3),
+            },
         },
     }

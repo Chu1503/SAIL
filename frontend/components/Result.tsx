@@ -51,7 +51,7 @@ export default function Result({
 
   return (
     <section className="flex min-h-[calc(100dvh-3rem)] flex-col">
-      <header className="flex items-center justify-between pb-5">
+      <header className="pb-5">
         <button
           type="button"
           onClick={onHome}
@@ -60,15 +60,6 @@ export default function Result({
         >
           <BackIcon />
         </button>
-
-        <div className="text-right">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-emerald-400">
-            Analysis complete
-          </p>
-          <p className="mt-1 text-xs text-neutral-600">
-            Probable superficial vessels
-          </p>
-        </div>
       </header>
 
       <div className="grid flex-1 content-center gap-5 sm:grid-cols-2">
@@ -100,21 +91,6 @@ export default function Result({
           </figcaption>
         </figure>
       </div>
-
-      <div className="mx-auto mt-5 grid w-full max-w-xl grid-cols-3 overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.025]">
-        <Metric
-          label="Image quality"
-          value={`${Math.round(data.analysis.signalQuality * 100)}%`}
-        />
-        <Metric label="Paths" value={String(data.analysis.connectedVessels)} />
-        <Metric label="Junctions" value={String(data.analysis.junctions)} />
-      </div>
-
-      {data.analysis.warnings.length > 0 && (
-        <p className="mt-3 text-center text-xs text-amber-300/80">
-          {data.analysis.warnings.join(" · ")}
-        </p>
-      )}
 
       <div className="flex items-end justify-center gap-8 pt-5">
         <div className="flex flex-col items-center gap-2">
@@ -188,17 +164,6 @@ export default function Result({
         Research visualization only · Not a needle-placement recommendation
       </p>
     </section>
-  );
-}
-
-function Metric({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="border-r border-white/[0.06] px-3 py-3 text-center last:border-r-0">
-      <p className="text-lg font-semibold tracking-tight text-white">{value}</p>
-      <p className="mt-0.5 text-[9px] font-medium uppercase tracking-[0.18em] text-neutral-600">
-        {label}
-      </p>
-    </div>
   );
 }
 
