@@ -1,7 +1,7 @@
-// Main page: Start Camera, capture a frame, confirm it, run the pipeline, and show the vein overlay.
+// Main page: capture or upload an image, run the pipeline, and show the vein overlay.
 "use client";
 
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import Camera from "@/components/Camera";
 import Result from "@/components/Result";
 import InstallPrompt from "@/components/InstallPrompt";
@@ -68,6 +68,11 @@ export default function Home() {
     void processCapture(capturedBlob);
   }
 
+  function handleUpload(file: File) {
+    const previewUrl = URL.createObjectURL(file);
+    handleCapture(file, previewUrl);
+  }
+
   function retakeCapture() {
     setPendingCapture(null);
     setPendingPreview("");
@@ -82,7 +87,7 @@ export default function Home() {
             <InstallPrompt />
           </header>
 
-          <Idle onStart={openCamera} />
+          <Idle onStart={openCamera} onUpload={handleUpload} />
 
           <footer className="mt-auto pt-8 text-center text-[10px] font-medium uppercase tracking-[0.3em] text-neutral-700">
             SAIL
@@ -167,7 +172,21 @@ function ProcessingError({
   );
 }
 
-function Idle({ onStart }: { onStart: () => void }) {
+function Idle({
+  onStart,
+  onUpload,
+}: {
+  onStart: () => void;
+  onUpload: (file: File) => void;
+}) {
+  function selectImage(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    onUpload(file);
+    // Permit selecting the same image again after returning to this screen.
+    event.target.value = "";
+  }
+
   return (
     <section className="flex flex-1 flex-col items-center text-center">
       <div className="pt-[16dvh]">
@@ -184,7 +203,7 @@ function Idle({ onStart }: { onStart: () => void }) {
         </p>
       </div>
 
-      <div className="mt-auto pb-5 pt-16">
+      <div className="mt-auto flex flex-col items-center pb-5 pt-16">
         <button
           type="button"
           onClick={onStart}
@@ -195,6 +214,21 @@ function Idle({ onStart }: { onStart: () => void }) {
             Start
           </span>
         </button>
+
+        <label className="mt-7 flex cursor-pointer items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-5 py-3 text-sm font-medium text-neutral-300 transition hover:border-emerald-400/30 hover:text-white active:scale-95">
+          <UploadIcon />
+          Upload image
+          <input
+            type="file"
+            accept="image/*"
+            onChange={selectImage}
+            className="sr-only"
+          />
+        </label>
+
+        <p className="mt-3 text-[10px] uppercase tracking-[0.16em] text-neutral-700">
+          Uses the same analysis as camera capture
+        </p>
       </div>
     </section>
   );
@@ -226,6 +260,26 @@ function RetryIcon() {
     >
       <path d="M3 12a9 9 0 1 0 3-6.7" />
       <path d="M3 4v6h6" />
+    </svg>
+  );
+}
+
+function UploadIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 16V4" />
+      <path d="m7 9 5-5 5 5" />
+      <path d="M5 20h14a2 2 0 0 0 2-2v-3" />
+      <path d="M3 15v3a2 2 0 0 0 2 2" />
     </svg>
   );
 }
