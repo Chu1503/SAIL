@@ -235,7 +235,9 @@ async def process(file: UploadFile = File(...)):
         warnings.append("Detected paths have weak visual support")
 
     return {
-        "original": _to_data_url(prepared.original),
+        # The input panel must preserve the decoded capture exactly. The
+        # isolated-arm image remains the base for the overlay and analysis.
+        "original": _to_data_url(img),
         "processed": _to_data_url(prepared.enhanced),
         "overlay": _to_data_url(overlay),
         "graph": _to_data_url(graph),
