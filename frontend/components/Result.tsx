@@ -66,14 +66,14 @@ export default function Result({
         <figure>
           <div className="bg-neutral-950">
             <img
-              src={data.processed}
-              alt="Post-processed scan"
+              src={data.original}
+              alt="Original input"
               className="max-h-[55dvh] w-full object-contain"
             />
           </div>
 
           <figcaption className="mt-3 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-600">
-            Post processed
+            Input
           </figcaption>
         </figure>
 
