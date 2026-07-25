@@ -2,6 +2,7 @@
 
 import os
 import tempfile
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 from threading import Lock
@@ -33,7 +34,9 @@ except ImportError:
 MODEL_PATH = Path(__file__).resolve().parent / "models" / "magic_touch.tflite"
 MODEL_INPUT_LONG_EDGE = 512
 _SEGMENTER = None
+_SEGMENTER_UNAVAILABLE = False
 _SEGMENTER_LOCK = Lock()
+logger = logging.getLogger("veinz.arm-segmentation")
 
 
 @dataclass(frozen=True)
@@ -44,24 +47,32 @@ class ArmSegmentation:
 
 
 def _segmenter():
-    global _SEGMENTER
+    global _SEGMENTER, _SEGMENTER_UNAVAILABLE
     if _SEGMENTER is not None:
         return _SEGMENTER
-    if mp is None or not MODEL_PATH.exists():
+    if _SEGMENTER_UNAVAILABLE or mp is None or not MODEL_PATH.exists():
         return None
 
     with _SEGMENTER_LOCK:
         if _SEGMENTER is None:
-            options = mp.tasks.vision.InteractiveSegmenterOptions(
-                base_options=mp.tasks.BaseOptions(
-                    model_asset_path=str(MODEL_PATH),
-                ),
-                output_confidence_masks=True,
-                output_category_mask=True,
-            )
-            _SEGMENTER = (
-                mp.tasks.vision.InteractiveSegmenter.create_from_options(options)
-            )
+            try:
+                options = mp.tasks.vision.InteractiveSegmenterOptions(
+                    base_options=mp.tasks.BaseOptions(
+                        model_asset_path=str(MODEL_PATH),
+                        delegate=mp.tasks.BaseOptions.Delegate.CPU,
+                    ),
+                    output_confidence_masks=True,
+                    output_category_mask=True,
+                )
+                _SEGMENTER = (
+                    mp.tasks.vision.InteractiveSegmenter.create_from_options(options)
+                )
+            except Exception:
+                _SEGMENTER_UNAVAILABLE = True
+                logger.exception(
+                    "MediaPipe could not initialize; using geometric arm fallback"
+                )
+                return None
     return _SEGMENTER
 
 
@@ -235,10 +246,61 @@ def _refine_broad_mask(image_bgr, broad, point):
     return refined * 255
 
 
-def _full_frame_fallback(image_bgr):
-    """Never reject a decodable capture when model segmentation is unavailable."""
+def _geometric_fallback(image_bgr):
+    """Keep analyzing a centered arm when the hosted model is unavailable."""
     height, width = image_bgr.shape[:2]
-    return np.full((height, width), 255, dtype=np.uint8)
+    gray = cv2.GaussianBlur(
+        cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY),
+        (0, 0),
+        sigmaX=3.0,
+    )
+    horizontal_band = max(3, round(height * 0.04))
+    vertical_band = max(3, round(width * 0.04))
+    horizontal_profile = np.median(
+        gray[
+            max(0, height // 2 - horizontal_band):
+            min(height, height // 2 + horizontal_band + 1),
+            :,
+        ],
+        axis=0,
+    )
+    vertical_profile = np.median(
+        gray[
+            :,
+            max(0, width // 2 - vertical_band):
+            min(width, width // 2 + vertical_band + 1),
+        ],
+        axis=1,
+    )
+    horizontal_change = float(
+        np.mean(np.abs(np.diff(horizontal_profile.astype(np.float32))))
+    )
+    vertical_change = float(
+        np.mean(np.abs(np.diff(vertical_profile.astype(np.float32))))
+    )
+
+    mask = np.zeros((height, width), dtype=np.uint8)
+    if horizontal_change <= vertical_change:
+        axes = (
+            max(2, round(width * 0.49)),
+            max(2, round(height * 0.22)),
+        )
+    else:
+        axes = (
+            max(2, round(width * 0.22)),
+            max(2, round(height * 0.49)),
+        )
+    cv2.ellipse(
+        mask,
+        (width // 2, height // 2),
+        axes,
+        0,
+        0,
+        360,
+        255,
+        -1,
+    )
+    return mask
 
 
 def segment_arm(image_bgr):
@@ -251,10 +313,18 @@ def segment_arm(image_bgr):
         interpolation=cv2.INTER_AREA,
     )
 
-    broad, point, confidence = _model_arm_mask(working)
+    try:
+        broad, point, confidence = _model_arm_mask(working)
+    except Exception:
+        # Some headless hosts cannot initialize MediaPipe's vision runtime.
+        # Segmentation is an enhancement, not a reason to abort vessel analysis.
+        logger.exception(
+            "Arm model unavailable; continuing with the complete input frame"
+        )
+        broad, point, confidence = None, None, 0.0
     if broad is None or point is None:
-        mask = _full_frame_fallback(working)
-        method = "full-frame-fallback"
+        mask = _geometric_fallback(working)
+        method = "geometric-fallback"
         confidence = 0.0
     else:
         mask = _refine_broad_mask(working, broad, point)
@@ -263,8 +333,8 @@ def segment_arm(image_bgr):
     mask = cv2.resize(mask, (width, height), interpolation=cv2.INTER_NEAREST)
     mask = (mask > 0).astype(np.uint8) * 255
     if float(np.mean(mask > 0)) < 0.025:
-        mask = _full_frame_fallback(image_bgr)
-        method = "full-frame-fallback"
+        mask = _geometric_fallback(image_bgr)
+        method = "geometric-fallback"
         confidence = 0.0
 
     return ArmSegmentation(
