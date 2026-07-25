@@ -2,6 +2,6 @@ fastapi
 uvicorn[standard]
 python-multipart
 opencv-python-headless
-onnxruntime>=1.19.2,<2
+mediapipe==0.10.35
 scikit-image
 numpy

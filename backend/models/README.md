@@ -1,12 +1,12 @@
 # Segmentation model
 
-`efficientsam_ti.onnx` is the EfficientSAM-Ti ONNX checkpoint used to obtain a
-prompt-guided forearm core before boundary refinement.
+`magic_touch.tflite` is Google's MagicTouch interactive-segmentation checkpoint.
+It supplies a broad, prompt-guided arm proposal before geometric and tissue
+boundary refinement.
 
-- Project: https://github.com/yformer/EfficientSAM
-- Model source: https://huggingface.co/yunyangx/EfficientSAM
+- Model source: https://storage.googleapis.com/mediapipe-models/interactive_segmenter/magic_touch/float32/latest/magic_touch.tflite
+- Documentation: https://developers.google.com/mediapipe/solutions/vision/interactive_segmenter
 - License: Apache-2.0
-- Paper: EfficientSAM: Leveraged Masked Image Pretraining for Efficient Segment Anything
 
 The model is loaded only by the Python backend. It is not bundled into the
 Android web container.

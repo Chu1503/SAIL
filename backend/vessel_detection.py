@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import cv2
 import numpy as np
-from skimage.filters import apply_hysteresis_threshold, frangi, meijering, sato
+from skimage.filters import apply_hysteresis_threshold, frangi, sato
 from skimage.morphology import remove_small_holes, remove_small_objects, skeletonize
 
 
@@ -185,15 +185,16 @@ def detect_vessel_graph(enhanced, corrected, blackhat, analysis_mask):
         beta=0.5,
         black_ridges=True,
     )
-    sato_response = sato(image, sigmas=scales, black_ridges=True)
-    meijering_response = meijering(image, sigmas=scales, black_ridges=True)
     frangi_response = np.nan_to_num(frangi_response)
-    sato_response = np.nan_to_num(sato_response)
-    meijering_response = np.nan_to_num(meijering_response)
-
     frangi_norm = _normalize_response(frangi_response, valid)
+
+    # Compute the second Hessian family after releasing Frangi's full-resolution
+    # response. This keeps hosted-worker memory comfortably below its limit.
+    del frangi_response
+    sato_response = sato(image, sigmas=scales, black_ridges=True)
+    sato_response = np.nan_to_num(sato_response)
     sato_norm = _normalize_response(sato_response, valid)
-    meijering_norm = _normalize_response(meijering_response, valid)
+    del sato_response
 
     local_background = cv2.GaussianBlur(
         corrected.astype(np.float32), (0, 0), sigmaX=7.0
@@ -209,9 +210,7 @@ def detect_vessel_graph(enhanced, corrected, blackhat, analysis_mask):
     blackhat_norm = blackhat.astype(np.float32) / 255.0
     blackhat_norm *= valid.astype(np.float32)
 
-    tubular = np.maximum.reduce(
-        (frangi_norm, 0.82 * sato_norm, 0.88 * meijering_norm)
-    )
+    tubular = np.maximum(frangi_norm, 0.82 * sato_norm)
     response = (
         0.50 * tubular
         + 0.32 * blackhat_norm

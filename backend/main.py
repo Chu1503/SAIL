@@ -1,5 +1,6 @@
 # FastAPI server for training-free superficial-vessel visualization.
 import base64
+import logging
 
 import cv2
 import numpy as np
@@ -11,6 +12,7 @@ from vessel_detection import detect_vessel_graph
 from overlay import make_graph_mask, make_overlay
 
 app = FastAPI(title="VEINZ API")
+logger = logging.getLogger("veinz")
 
 allowed_origins = [
     "http://localhost:3000",
@@ -36,6 +38,40 @@ def _to_data_url(img):
     return f"data:image/png;base64,{b64}"
 
 
+def _fallback_result(img, error):
+    """Return a valid result for every decodable capture, even after pipeline errors."""
+    logger.error(
+        "Advanced image processing failed; using full-frame fallback",
+        exc_info=(type(error), error, error.__traceback__),
+    )
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    processed = cv2.createCLAHE(
+        clipLimit=2.0,
+        tileGridSize=(8, 8),
+    ).apply(gray)
+    graph = np.zeros_like(img)
+    return {
+        "original": _to_data_url(img),
+        "processed": _to_data_url(processed),
+        "overlay": _to_data_url(img),
+        "graph": _to_data_url(graph),
+        "analysis": {
+            "signalQuality": 0.0,
+            "pathConfidence": 0.0,
+            "vesselCoverage": 0.0,
+            "connectedVessels": 0,
+            "segments": 0,
+            "endpoints": 0,
+            "junctions": 0,
+            "warnings": ["Advanced processing unavailable; full-frame fallback used"],
+            "armSegmentation": {
+                "method": "full-frame-fallback",
+                "confidence": 0.0,
+            },
+        },
+    }
+
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
@@ -52,23 +88,26 @@ async def process(file: UploadFile = File(...)):
             detail="Could not decode uploaded image",
         )
 
-    prepared = prepare_image(img)
-    vessels = detect_vessel_graph(
-        prepared.enhanced,
-        prepared.corrected,
-        prepared.vessel_enhanced,
-        prepared.analysis_mask,
-    )
-    overlay = make_overlay(
-        prepared.original,
-        vessels.skeleton,
-        vessels.junctions,
-    )
-    graph = make_graph_mask(
-        vessels.skeleton,
-        vessels.endpoints,
-        vessels.junctions,
-    )
+    try:
+        prepared = prepare_image(img)
+        vessels = detect_vessel_graph(
+            prepared.enhanced,
+            prepared.corrected,
+            prepared.vessel_enhanced,
+            prepared.analysis_mask,
+        )
+        overlay = make_overlay(
+            prepared.original,
+            vessels.skeleton,
+            vessels.junctions,
+        )
+        graph = make_graph_mask(
+            vessels.skeleton,
+            vessels.endpoints,
+            vessels.junctions,
+        )
+    except Exception as error:
+        return _fallback_result(img, error)
 
     warnings = list(prepared.warnings)
     if vessels.connected_vessels == 0:

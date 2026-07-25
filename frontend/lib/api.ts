@@ -25,14 +25,6 @@ const API_URL = (
 ).replace(/\/$/, "");
 
 export async function processImage(blob: Blob): Promise<ProcessResult> {
-  const form = new FormData();
-
-  form.append(
-    "file",
-    blob,
-    blob.type === "image/jpeg" ? "capture.jpg" : "capture.png"
-  );
-
   const endpoint = `${API_URL}/process`;
 
   console.log("Sending image to backend:", {
@@ -41,12 +33,29 @@ export async function processImage(blob: Blob): Promise<ProcessResult> {
     size: blob.size,
   });
 
-  const res = await fetch(endpoint, {
-    method: "POST",
-    body: form,
-  });
+  let res: Response | null = null;
+  let responseText = "";
 
-  const responseText = await res.text();
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const form = new FormData();
+    form.append(
+      "file",
+      blob,
+      blob.type === "image/jpeg" ? "capture.jpg" : "capture.png"
+    );
+
+    res = await fetch(endpoint, {
+      method: "POST",
+      body: form,
+    });
+    responseText = await res.text();
+    if (res.ok || res.status < 500 || attempt === 1) break;
+    await new Promise((resolve) => window.setTimeout(resolve, 900));
+  }
+
+  if (!res) {
+    throw new Error("The processing service did not return a response");
+  }
 
   console.log("Backend response:", {
     status: res.status,

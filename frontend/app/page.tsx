@@ -8,18 +8,22 @@ import InstallPrompt from "@/components/InstallPrompt";
 import { processImage, type ProcessResult } from "@/lib/api";
 import type { ScanExport } from "@/lib/exportResults";
 
-type Stage = "idle" | "camera" | "processing" | "result";
+type Stage = "idle" | "camera" | "processing" | "processingError" | "result";
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("idle");
   const [result, setResult] = useState<ProcessResult | null>(null);
   const [completedScans, setCompletedScans] = useState<ScanExport[]>([]);
+  const [pendingCapture, setPendingCapture] = useState<Blob | null>(null);
+  const [pendingPreview, setPendingPreview] = useState("");
   const [error, setError] = useState("");
 
   function goHome() {
     setStage("idle");
     setResult(null);
     setCompletedScans([]);
+    setPendingCapture(null);
+    setPendingPreview("");
     setError("");
   }
 
@@ -33,7 +37,7 @@ export default function Home() {
     setStage(result ? "result" : "idle");
   }
 
-  async function handleCapture(capturedBlob: Blob) {
+  async function processCapture(capturedBlob: Blob) {
     setStage("processing");
     setError("");
 
@@ -44,12 +48,30 @@ export default function Home() {
         ...current,
         { capturedAt: new Date().toISOString(), result: processedResult },
       ]);
+      setPendingCapture(null);
+      setPendingPreview("");
       setStage("result");
     } catch (err) {
       console.error("Processing failed:", err);
-      setError("Processing failed. Check your connection and try again.");
-      setStage("camera");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "The processing service could not analyze this capture."
+      );
+      setStage("processingError");
     }
+  }
+
+  function handleCapture(capturedBlob: Blob, capturedUrl: string) {
+    setPendingCapture(capturedBlob);
+    setPendingPreview(capturedUrl);
+    void processCapture(capturedBlob);
+  }
+
+  function retakeCapture() {
+    setPendingCapture(null);
+    setPendingPreview("");
+    openCamera();
   }
 
   return (
@@ -74,6 +96,17 @@ export default function Home() {
 
       {stage === "processing" && <LoadingScreen />}
 
+      {stage === "processingError" && (
+        <ProcessingError
+          preview={pendingPreview}
+          message={error}
+          onRetry={() => {
+            if (pendingCapture) void processCapture(pendingCapture);
+          }}
+          onRetake={retakeCapture}
+        />
+      )}
+
       {stage === "result" && result && (
         <Result
           data={result}
@@ -83,6 +116,54 @@ export default function Home() {
         />
       )}
     </main>
+  );
+}
+
+function ProcessingError({
+  preview,
+  message,
+  onRetry,
+  onRetake,
+}: {
+  preview: string;
+  message: string;
+  onRetry: () => void;
+  onRetake: () => void;
+}) {
+  return (
+    <section className="flex min-h-dvh flex-col items-center justify-center px-6 text-center">
+      {preview && (
+        <img
+          src={preview}
+          alt="Captured image awaiting processing"
+          className="mb-7 aspect-[8/5] max-h-[45dvh] w-full max-w-xl rounded-2xl border border-white/10 object-contain"
+        />
+      )}
+      <h2 className="text-xl font-semibold text-white">Processing interrupted</h2>
+      <p className="mt-3 max-w-md text-sm leading-6 text-neutral-500">
+        Your capture has been kept. It was not rejected for image quality.
+      </p>
+      <p className="mt-2 max-w-md text-xs leading-5 text-red-400/80">
+        {message}
+      </p>
+      <div className="mt-7 flex items-center gap-4">
+        <button
+          type="button"
+          onClick={onRetake}
+          className="rounded-full border border-white/15 px-5 py-3 text-sm text-neutral-300"
+        >
+          Retake
+        </button>
+        <button
+          type="button"
+          onClick={onRetry}
+          className="flex items-center gap-2 rounded-full bg-emerald-400 px-5 py-3 text-sm font-semibold text-black"
+        >
+          <RetryIcon />
+          Retry same image
+        </button>
+      </div>
+    </section>
   );
 }
 
@@ -145,23 +226,6 @@ function RetryIcon() {
     >
       <path d="M3 12a9 9 0 1 0 3-6.7" />
       <path d="M3 4v6h6" />
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m5 12 4 4L19 6" />
     </svg>
   );
 }

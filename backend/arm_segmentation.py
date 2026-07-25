@@ -1,5 +1,7 @@
-"""Model-guided forearm isolation for close-range NIR camera frames."""
+"""Memory-safe, model-guided forearm isolation for close-range NIR frames."""
 
+import os
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 from threading import Lock
@@ -7,16 +9,31 @@ from threading import Lock
 import cv2
 import numpy as np
 
+# MediaPipe imports matplotlib transitively. Keep its caches in a writable,
+# disposable location on hosted workers instead of depending on a home folder.
+os.environ.setdefault(
+    "MPLCONFIGDIR",
+    str(Path(tempfile.gettempdir()) / "veinz-matplotlib"),
+)
+os.environ.setdefault(
+    "XDG_CACHE_HOME",
+    str(Path(tempfile.gettempdir()) / "veinz-cache"),
+)
+
 try:
-    import onnxruntime as ort
-except ImportError:  # The geometric fallback keeps local diagnostics usable.
-    ort = None
+    import mediapipe as mp
+    from mediapipe.tasks.python.components.containers.keypoint import (
+        NormalizedKeypoint,
+    )
+except ImportError:
+    mp = None
+    NormalizedKeypoint = None
 
 
-MODEL_PATH = Path(__file__).resolve().parent / "models" / "efficientsam_ti.onnx"
+MODEL_PATH = Path(__file__).resolve().parent / "models" / "magic_touch.tflite"
 MODEL_INPUT_LONG_EDGE = 512
-_SESSION = None
-_SESSION_LOCK = Lock()
+_SEGMENTER = None
+_SEGMENTER_LOCK = Lock()
 
 
 @dataclass(frozen=True)
@@ -26,35 +43,39 @@ class ArmSegmentation:
     method: str
 
 
-def _session():
-    global _SESSION
-    if _SESSION is not None:
-        return _SESSION
-    if ort is None or not MODEL_PATH.exists():
+def _segmenter():
+    global _SEGMENTER
+    if _SEGMENTER is not None:
+        return _SEGMENTER
+    if mp is None or not MODEL_PATH.exists():
         return None
 
-    with _SESSION_LOCK:
-        if _SESSION is None:
-            options = ort.SessionOptions()
-            options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
-            options.intra_op_num_threads = 4
-            _SESSION = ort.InferenceSession(
-                str(MODEL_PATH),
-                sess_options=options,
-                providers=["CPUExecutionProvider"],
+    with _SEGMENTER_LOCK:
+        if _SEGMENTER is None:
+            options = mp.tasks.vision.InteractiveSegmenterOptions(
+                base_options=mp.tasks.BaseOptions(
+                    model_asset_path=str(MODEL_PATH),
+                ),
+                output_confidence_masks=True,
+                output_category_mask=True,
             )
-    return _SESSION
+            _SEGMENTER = (
+                mp.tasks.vision.InteractiveSegmenter.create_from_options(options)
+            )
+    return _SEGMENTER
 
 
 def _component_at(mask, point):
     """Retain the prompted component and discard disconnected model speckle."""
-    binary = mask.astype(np.uint8)
+    binary = (mask > 0).astype(np.uint8)
     count, labels, stats, _ = cv2.connectedComponentsWithStats(binary, connectivity=8)
     if count <= 1:
         return binary
 
     x, y = point
-    label = int(labels[np.clip(y, 0, labels.shape[0] - 1), np.clip(x, 0, labels.shape[1] - 1)])
+    x = int(np.clip(x, 0, labels.shape[1] - 1))
+    y = int(np.clip(y, 0, labels.shape[0] - 1))
+    label = int(labels[y, x])
     if label == 0:
         label = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
     return (labels == label).astype(np.uint8)
@@ -78,137 +99,132 @@ def _shape_metrics(mask):
     return float(mask.mean()), elongation, span
 
 
-def _candidate_score(mask, model_quality):
+def _broad_candidate_score(mask, confidence):
     area, elongation, span = _shape_metrics(mask)
-    if area < 0.025 or area > 0.28 or elongation < 1.55 or span < 0.24:
+    if area < 0.045 or area > 0.62 or elongation < 1.25 or span < 0.25:
         return -1e6
 
-    area_preference = 1.0 - min(1.0, abs(area - 0.12) / 0.16)
+    area_preference = 1.0 - min(1.0, abs(area - 0.25) / 0.38)
     return (
-        float(model_quality)
-        + 0.95 * min(elongation / 5.5, 1.0)
-        + 0.75 * min(span, 1.0)
+        0.35 * float(confidence)
+        + 1.05 * min(elongation / 4.0, 1.0)
+        + 0.85 * min(span, 1.0)
         + 0.20 * area_preference
     )
 
 
-def _model_arm_core(image_bgr):
-    """Prompt EfficientSAM from both sides of the centered acquisition guide."""
-    session = _session()
-    if session is None:
+def _model_arm_mask(image_bgr):
+    """Prompt the lightweight object model on both sides of the frame center."""
+    segmenter = _segmenter()
+    if segmenter is None:
         return None, None, 0.0
 
     height, width = image_bgr.shape[:2]
-    scale = MODEL_INPUT_LONG_EDGE / max(height, width)
-    small_width = max(32, round(width * scale))
-    small_height = max(32, round(height * scale))
-    small = cv2.resize(
-        image_bgr,
-        (small_width, small_height),
-        interpolation=cv2.INTER_AREA,
+    rgb = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
+    media_image = mp.Image(
+        image_format=mp.ImageFormat.SRGB,
+        data=rgb,
     )
-    rgb = cv2.cvtColor(small, cv2.COLOR_BGR2RGB)
-    model_image = rgb.transpose(2, 0, 1)[None].astype(np.float32) / 255.0
+    roi_type = mp.tasks.vision.InteractiveSegmenterRegionOfInterest
 
     best_mask = None
-    best_broad_mask = None
+    best_point = None
+    best_confidence = 0.0
     best_score = -1e6
-    best_quality = 0.0
-    # The Arducam frame is landscape and the capture guide crosses the middle.
-    # Two prompts avoid selecting a watch or hand when either side is occluded.
+
     for normalized_x in (0.35, 0.65):
-        point = (round(normalized_x * small_width), round(0.50 * small_height))
-        point_coords = np.array(
-            [[[[float(point[0]), float(point[1])]]]],
-            dtype=np.float32,
+        point = (round(normalized_x * width), round(0.50 * height))
+        roi = roi_type(
+            format=roi_type.Format.KEYPOINT,
+            keypoint=NormalizedKeypoint(x=normalized_x, y=0.50),
         )
-        point_labels = np.ones((1, 1, 1), dtype=np.float32)
 
         try:
-            with _SESSION_LOCK:
-                logits, qualities, *_ = session.run(
-                    None,
-                    {
-                        "batched_images": model_image,
-                        "batched_point_coords": point_coords,
-                        "batched_point_labels": point_labels,
-                    },
-                )
+            with _SEGMENTER_LOCK:
+                result = segmenter.segment(media_image, roi)
         except Exception:
             continue
 
-        broad_candidate = cv2.resize(
-            (logits[0, 0, 0] >= 0).astype(np.uint8),
-            (small_width, small_height),
-            interpolation=cv2.INTER_NEAREST,
+        category = np.squeeze(result.category_mask.numpy_view())
+        # MagicTouch encodes the prompted foreground as category 0.
+        candidate = _component_at(category == 0, point)
+        confidence_map = np.squeeze(result.confidence_masks[0].numpy_view())
+        confidence = (
+            float(np.mean(confidence_map[candidate > 0]))
+            if np.any(candidate)
+            else 0.0
         )
-        broad_candidate = _component_at(broad_candidate, point)
+        score = _broad_candidate_score(candidate, confidence)
+        if score > best_score:
+            best_mask = candidate
+            best_point = point
+            best_confidence = confidence
+            best_score = score
 
-        for index in range(logits.shape[2]):
-            candidate = cv2.resize(
-                (logits[0, 0, index] >= 0).astype(np.uint8),
-                (small_width, small_height),
-                interpolation=cv2.INTER_NEAREST,
-            )
-            candidate = _component_at(candidate, point)
-            quality = float(qualities[0, 0, index])
-            score = _candidate_score(candidate, quality)
-            if score > best_score:
-                best_mask = candidate
-                best_broad_mask = broad_candidate
-                best_score = score
-                best_quality = quality
-
-    return best_mask, best_broad_mask, best_quality
+    return best_mask, best_point, best_confidence
 
 
-def _refine_core(image_bgr, core, broad):
-    """Keep the broad model arm while trimming table spill around its core axis."""
-    height, width = core.shape
-    core = (core > 0).astype(np.uint8)
+def _refine_broad_mask(image_bgr, broad, point):
+    """Preserve the broad arm proposal while trimming table and dark hardware."""
+    height, width = broad.shape
     broad = (broad > 0).astype(np.uint8)
+
+    erosion_size = max(7, round(min(height, width) * 0.055))
+    if erosion_size % 2 == 0:
+        erosion_size += 1
+    core = cv2.erode(
+        broad,
+        cv2.getStructuringElement(
+            cv2.MORPH_ELLIPSE,
+            (erosion_size, erosion_size),
+        ),
+    )
+    core = _component_at(core, point)
+    if int(core.sum()) < 24:
+        core = _component_at(broad, point)
 
     ys, xs = np.where(core > 0)
     if xs.size < 8:
-        return core * 255
+        return _component_at(broad, point) * 255
 
     points = np.column_stack((xs, ys)).astype(np.float32)
     center = points.mean(axis=0)
     _, eigenvectors = np.linalg.eigh(np.cov(points.T))
     minor_axis = eigenvectors[:, 0]
-
     yy, xx = np.mgrid[:height, :width]
     perpendicular_distance = np.abs(
         (xx - center[0]) * minor_axis[0]
         + (yy - center[1]) * minor_axis[1]
     )
-    # This intentionally follows the user's preferred broad proposal. The core
-    # establishes only the forearm axis; a generous band preserves the full arm
-    # thickness while dropping the proposal's distant floor/table lobe.
-    tube_radius = max(18.0, min(height, width) * 0.24)
-    arm_tube = perpendicular_distance <= tube_radius
+    tube_radius = max(18.0, min(height, width) * 0.27)
+    refined = (broad > 0) & (perpendicular_distance <= tube_radius)
 
-    open_size = max(5, round(min(height, width) * 0.018))
-    if open_size % 2 == 0:
-        open_size += 1
-    broad = cv2.morphologyEx(
-        broad,
-        cv2.MORPH_OPEN,
-        cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (open_size, open_size)),
+    # Dark watch bands separate the usable forearm from the hand. Removing only
+    # the darkest broad-mask pixels avoids suppressing faint vessels in skin.
+    smoothed = cv2.GaussianBlur(
+        cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY),
+        (0, 0),
+        sigmaX=2.0,
     )
-    refined = ((broad > 0) & arm_tube) | (core > 0)
-    refined = refined.astype(np.uint8)
+    sample = smoothed[refined]
+    if sample.size:
+        dark_cutoff = max(8.0, float(np.percentile(sample, 6.0)))
+        tissue = smoothed > dark_cutoff
+        tissue_close = max(5, round(min(height, width) * 0.018))
+        if tissue_close % 2 == 0:
+            tissue_close += 1
+        tissue = cv2.morphologyEx(
+            tissue.astype(np.uint8),
+            cv2.MORPH_CLOSE,
+            cv2.getStructuringElement(
+                cv2.MORPH_ELLIPSE,
+                (tissue_close, tissue_close),
+            ),
+        ).astype(bool)
+        refined &= tissue
 
-    count, labels, _, _ = cv2.connectedComponentsWithStats(refined, connectivity=8)
-    if count > 1:
-        overlaps = [
-            (int(np.sum((labels == label) & (core > 0))), label)
-            for label in range(1, count)
-        ]
-        selected_label = max(overlaps)[1]
-        refined = (labels == selected_label).astype(np.uint8)
-
-    close_size = max(5, round(min(height, width) * 0.015))
+    refined = _component_at(refined, point)
+    close_size = max(5, round(min(height, width) * 0.014))
     if close_size % 2 == 0:
         close_size += 1
     refined = cv2.morphologyEx(
@@ -219,20 +235,14 @@ def _refine_core(image_bgr, core, broad):
     return refined * 255
 
 
-def _fallback_mask(image_bgr):
-    """Conservative centered capsule used only when the model is unavailable."""
+def _full_frame_fallback(image_bgr):
+    """Never reject a decodable capture when model segmentation is unavailable."""
     height, width = image_bgr.shape[:2]
-    mask = np.zeros((height, width), dtype=np.uint8)
-    if width >= height:
-        axes = (round(width * 0.46), round(height * 0.17))
-    else:
-        axes = (round(width * 0.17), round(height * 0.46))
-    cv2.ellipse(mask, (width // 2, height // 2), axes, 0, 0, 360, 255, -1)
-    return mask
+    return np.full((height, width), 255, dtype=np.uint8)
 
 
 def segment_arm(image_bgr):
-    """Return a full-resolution binary forearm mask."""
+    """Return a full-resolution mask; fall back to the complete input frame."""
     height, width = image_bgr.shape[:2]
     scale = min(1.0, MODEL_INPUT_LONG_EDGE / max(height, width))
     working = cv2.resize(
@@ -241,24 +251,24 @@ def segment_arm(image_bgr):
         interpolation=cv2.INTER_AREA,
     )
 
-    core, broad, quality = _model_arm_core(working)
-    if core is None:
-        mask = _fallback_mask(working)
-        method = "geometric-fallback"
-        quality = 0.0
+    broad, point, confidence = _model_arm_mask(working)
+    if broad is None or point is None:
+        mask = _full_frame_fallback(working)
+        method = "full-frame-fallback"
+        confidence = 0.0
     else:
-        mask = _refine_core(working, core, broad)
-        method = "efficientsam-refined"
+        mask = _refine_broad_mask(working, broad, point)
+        method = "magic-touch-refined"
 
     mask = cv2.resize(mask, (width, height), interpolation=cv2.INTER_NEAREST)
     mask = (mask > 0).astype(np.uint8) * 255
     if float(np.mean(mask > 0)) < 0.025:
-        mask = _fallback_mask(image_bgr)
-        method = "geometric-fallback"
-        quality = 0.0
+        mask = _full_frame_fallback(image_bgr)
+        method = "full-frame-fallback"
+        confidence = 0.0
 
     return ArmSegmentation(
         mask=mask,
-        confidence=float(np.clip(quality, 0.0, 1.0)),
+        confidence=float(np.clip(confidence, 0.0, 1.0)),
         method=method,
     )
