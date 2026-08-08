@@ -11,7 +11,7 @@ const geist = Geist({
 
 export const metadata: Metadata = {
   title: "VEINZ",
-  description: "External-camera vein visualization",
+  description: "",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
