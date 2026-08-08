@@ -9,6 +9,13 @@ training -- feeding it a background-blanked image would put an artificial
 black/skin edge in front of a model that never saw one. The SAM2 arm mask is
 applied to the model's output afterward, guaranteeing nothing outside the
 confirmed arm region is ever reported as a vein.
+
+Requires TensorFlow 2.15.x (see requirements-cubital.txt): unet.keras was
+saved under Keras 2.15 (Dec 2023, pre-Keras-3), and loading it under Keras 3
+(TF 2.16+) fails with "No module named 'keras.src.engine'" since Keras 3
+reorganized those internal paths. Run this in its own venv (cubital-env),
+separate from the SAM2/PyTorch env -- installing both frameworks together
+causes pip dependency-resolution thrashing.
 """
 
 import os
