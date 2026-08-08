@@ -1,9 +1,7 @@
-"""Local FastAPI server: arm-isolation-only stand-in for the hosted /process endpoint.
+"""Local FastAPI server: SAM2 arm isolation + CUBITAL vein extraction.
 
 Speaks the exact same response contract as backend/main.py's /process so the
-deployed frontend needs zero code changes to use it. Vein extraction is not
-implemented here yet -- the arm-masked image is returned in every image slot,
-and the pipeline.veinExtraction field is marked as not enabled.
+deployed frontend and APK need zero code changes to use it.
 
 Run with: uvicorn server:app --host 0.0.0.0 --port 8000
 """
@@ -11,6 +9,7 @@ Run with: uvicorn server:app --host 0.0.0.0 --port 8000
 import base64
 import logging
 import os
+import sys
 
 import cv2
 import numpy as np
@@ -19,13 +18,21 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from mask_arm import inference_autocast, load_predictor, mask_arm
+from vein_extraction import configure_gpu_memory_growth, extract_veins, load_vein_model
 
-CHECKPOINT = os.environ.get(
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+from overlay import make_graph_mask, make_overlay  # noqa: E402
+
+SAM_CHECKPOINT = os.environ.get(
     "SAM2_CHECKPOINT", "/home/chu/sam2/checkpoints/sam2.1_hiera_base_plus.pt"
 )
-MODEL_CFG = os.environ.get("SAM2_MODEL_CFG", "configs/sam2.1/sam2.1_hiera_b+.yaml")
+SAM_MODEL_CFG = os.environ.get("SAM2_MODEL_CFG", "configs/sam2.1/sam2.1_hiera_b+.yaml")
+CUBITAL_MODEL_PATH = os.environ.get(
+    "CUBITAL_MODEL_PATH",
+    os.path.join(os.path.dirname(__file__), "models", "unet.keras"),
+)
 
-app = FastAPI(title="VEINZ local arm-isolation server")
+app = FastAPI(title="VEINZ local server")
 logger = logging.getLogger("veinz.local")
 
 allowed_origins = [
@@ -46,13 +53,17 @@ app.add_middleware(
 
 _predictor = None
 _device = None
+_vein_model = None
 
 
 @app.on_event("startup")
-def _load_model():
-    global _predictor, _device
-    _predictor, _device = load_predictor(CHECKPOINT, MODEL_CFG)
+def _load_models():
+    global _predictor, _device, _vein_model
+    configure_gpu_memory_growth()
+    _predictor, _device = load_predictor(SAM_CHECKPOINT, SAM_MODEL_CFG)
     logger.info("SAM2 predictor loaded on %s", _device)
+    _vein_model = load_vein_model(CUBITAL_MODEL_PATH)
+    logger.info("CUBITAL vein model loaded from %s", CUBITAL_MODEL_PATH)
 
 
 def _to_data_url(img):
@@ -79,42 +90,47 @@ async def process(file: UploadFile = File(...)):
     with torch.inference_mode(), inference_autocast(_device):
         masked, mask = mask_arm(_predictor, img)
 
+    warnings = []
     if mask is None:
-        warnings = ["SAM2 could not find a confident arm mask; showing full frame"]
+        warnings.append("SAM2 could not find a confident arm mask; showing full frame")
         masked = img
-        coverage = 1.0
-    else:
-        warnings = ["Vein detection not enabled yet on the local server (arm isolation only)"]
-        coverage = float(mask.mean())
+        mask = np.ones(img.shape[:2], dtype=bool)
 
-    masked_url = _to_data_url(masked)
+    vein = extract_veins(_vein_model, img, mask)
+    if vein.connected_vessels == 0:
+        warnings.append("No reliable vein paths detected")
+
+    overlay = make_overlay(masked, vein.skeleton, vein.junctions)
+    graph = make_graph_mask(vein.skeleton, vein.endpoints, vein.junctions)
 
     return {
         "original": _to_data_url(img),
-        "processed": masked_url,
-        "overlay": masked_url,
-        "graph": masked_url,
+        "processed": _to_data_url(masked),
+        "overlay": _to_data_url(overlay),
+        "graph": _to_data_url(graph),
         "analysis": {
-            "signalQuality": 0.0,
-            "pathConfidence": 0.0,
-            "vesselCoverage": round(coverage, 5),
-            "connectedVessels": 0,
-            "segments": 0,
-            "endpoints": 0,
-            "junctions": 0,
+            "signalQuality": round(float(vein.response[mask.astype(bool)].mean()), 3)
+            if np.any(mask)
+            else 0.0,
+            "pathConfidence": round(vein.confidence, 3),
+            "vesselCoverage": round(vein.coverage, 5),
+            "connectedVessels": vein.connected_vessels,
+            "segments": vein.segment_count,
+            "endpoints": int(vein.endpoints.sum()),
+            "junctions": int(vein.junctions.sum()),
             "warnings": warnings,
             "pipeline": {
                 "armIsolation": {
                     "name": "SAM2 (hiera base+)",
                     "tier": "Local GPU",
                     "runtime": f"PyTorch {_device.upper()}",
-                    "status": "primary" if mask is not None else "fallback",
+                    "status": "primary" if np.any(mask) else "fallback",
                 },
                 "veinExtraction": {
-                    "name": "Not enabled yet",
-                    "tier": "N/A",
-                    "runtime": "N/A",
-                    "status": "fallback",
+                    "name": "CUBITAL U-Net (940nm NIR, forearm)",
+                    "tier": "Learned segmentation",
+                    "runtime": "TensorFlow (local GPU)",
+                    "status": "primary" if vein.connected_vessels > 0 else "fallback",
                 },
             },
         },

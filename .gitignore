@@ -105,3 +105,9 @@ temp/
 
 # The production segmentation checkpoint in backend/models is intentionally
 # versioned so local, hosted, and Android-backed deployments use the same model.
+
+# -----------------------------------------------------------------------------
+# Local-only model weights (downloaded on the machine that runs local-arm-mask,
+# not committed -- too large and machine-specific, unlike backend/models above)
+# -----------------------------------------------------------------------------
+local-arm-mask/models/
