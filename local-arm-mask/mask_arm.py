@@ -21,22 +21,24 @@ from sam2.build_sam import build_sam2
 from sam2.sam2_image_predictor import SAM2ImagePredictor
 
 
-def _component_at(mask, point):
-    """Keep only the connected piece touching the prompt point, discarding any
-    disconnected fragments SAM2 included in the same mask (e.g. a watch band
-    or shadow splitting the arm into separate blobs)."""
+def _keep_significant_components(mask, min_area_fraction=0.02):
+    """Keep every connected piece large enough to plausibly be arm/hand,
+    instead of restricting to one -- a watch band or shadow can legitimately
+    split the arm into separate pieces (e.g. hand vs forearm), and vein
+    extraction should still run across all of them, not just whichever piece
+    happens to contain the prompt point. Small fragments (a stray watch
+    reflection, model speckle) are dropped."""
     binary = mask.astype(np.uint8)
     count, labels, stats, _ = cv2.connectedComponentsWithStats(binary, connectivity=8)
     if count <= 1:
-        return binary.astype(bool)
+        return mask
 
-    x, y = point
-    x = int(np.clip(x, 0, labels.shape[1] - 1))
-    y = int(np.clip(y, 0, labels.shape[0] - 1))
-    label = int(labels[y, x])
-    if label == 0:
-        label = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
-    return labels == label
+    total_area = mask.size
+    keep = np.zeros_like(mask, dtype=bool)
+    for label in range(1, count):
+        if stats[label, cv2.CC_STAT_AREA] / total_area >= min_area_fraction:
+            keep |= labels == label
+    return keep
 
 
 def _shape_metrics(mask):
@@ -75,10 +77,10 @@ def best_arm_mask(predictor, image_rgb):
             multimask_output=True,
         )
         for mask, score in zip(masks, scores):
-            single_component = _component_at(mask.astype(bool), point[0])
-            candidate_score = _candidate_score(single_component, score)
+            significant = _keep_significant_components(mask.astype(bool))
+            candidate_score = _candidate_score(significant, score)
             if candidate_score > best_score:
-                best_mask, best_score = single_component, candidate_score
+                best_mask, best_score = significant, candidate_score
 
     return best_mask
 

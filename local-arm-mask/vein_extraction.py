@@ -25,6 +25,7 @@ from dataclasses import dataclass
 import cv2
 import numpy as np
 import tensorflow as tf
+from skimage.filters import apply_hysteresis_threshold
 from skimage.morphology import remove_small_holes, remove_small_objects, skeletonize
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
@@ -32,19 +33,8 @@ from vessel_detection import _prune_short_spurs, _topology_transitions  # noqa: 
 
 MODEL_INPUT_SIZE = 512
 VEIN_CLASS_INDEX = 2
-
-# CUBITAL's own reference code (final_interface_vein_segmentation.py) decides
-# "is this pixel a vein" purely by argmax over the 3 softmax classes -- no
-# absolute probability cutoff at all. A vein pixel can win with as little as
-# ~0.34 confidence in a close three-way tie. An earlier version of this file
-# used a fixed 0.5 probability threshold instead, which is a *stricter* bar
-# than CUBITAL was ever calibrated/validated against, and was silently
-# discarding real (if lower-confidence) vein pixels on faint captures. We
-# still want hysteresis-style gap bridging along thin/faint vein segments, so
-# argmax-wins-vein pixels seed the mask, and slightly-below-argmax pixels are
-# allowed to connect to a seed rather than requiring every pixel along a
-# vein to individually win the argmax.
-LOW_PROBABILITY_FLOOR = 0.15
+HYSTERESIS_LOW = 0.25
+HYSTERESIS_HIGH = 0.50
 
 
 @dataclass(frozen=True)
@@ -81,44 +71,28 @@ def _cubital_preprocess(image_bgr):
     return normalized[np.newaxis, :, :, np.newaxis]
 
 
-def vein_softmax(model, image_bgr):
-    """Run CUBITAL and return all 3 softmax class channels at full resolution."""
+def vein_probability_map(model, image_bgr):
+    """Run CUBITAL and return the vein-class softmax channel at full resolution."""
     height, width = image_bgr.shape[:2]
     model_input = _cubital_preprocess(image_bgr)
-    prediction = np.squeeze(model.predict(model_input, verbose=0))
-    return cv2.resize(prediction, (width, height), interpolation=cv2.INTER_LINEAR)
-
-
-def vein_probability_map(model, image_bgr):
-    """Run CUBITAL and return just the vein-class softmax channel."""
-    return vein_softmax(model, image_bgr)[:, :, VEIN_CLASS_INDEX]
+    prediction = model.predict(model_input, verbose=0)
+    vein_channel = np.squeeze(prediction)[:, :, VEIN_CLASS_INDEX]
+    return cv2.resize(vein_channel, (width, height), interpolation=cv2.INTER_LINEAR)
 
 
 def extract_veins(model, image_bgr, arm_mask):
     """Return a VeinResult restricted to arm_mask (a bool/0-255 array)."""
-    softmax = vein_softmax(model, image_bgr)
-    response = softmax[:, :, VEIN_CLASS_INDEX]
+    response = vein_probability_map(model, image_bgr)
     valid = arm_mask.astype(bool)
     response = response * valid
-    argmax_vein = (np.argmax(softmax, axis=-1) == VEIN_CLASS_INDEX) & valid
 
     empty = np.zeros(response.shape, dtype=bool)
     values = response[valid & (response > 0)]
     if values.size < 32:
         return VeinResult(empty, empty, empty, response, 0, 0, 0.0, 0.0)
 
-    # Hysteresis via connected components: grow each argmax-confirmed vein
-    # seed out to neighboring pixels that clear a lower probability floor,
-    # bridging small gaps without requiring every pixel along a faint vein
-    # to individually out-score both other classes.
-    low_mask = (response > LOW_PROBABILITY_FLOOR) & valid
-    low_count, low_labels = cv2.connectedComponents(low_mask.astype(np.uint8), connectivity=8)
-    candidates = np.zeros_like(low_mask)
-    for label in range(1, low_count):
-        component = low_labels == label
-        if np.any(component & argmax_vein):
-            candidates |= component
-
+    candidates = apply_hysteresis_threshold(response, HYSTERESIS_LOW, HYSTERESIS_HIGH)
+    candidates &= valid
     candidates = cv2.morphologyEx(
         candidates.astype(np.uint8),
         cv2.MORPH_CLOSE,
