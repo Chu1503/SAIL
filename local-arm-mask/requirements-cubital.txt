@@ -1,0 +1,4 @@
+tensorflow==2.18.0
+numpy<2.1
+scikit-image
+opencv-python-headless
