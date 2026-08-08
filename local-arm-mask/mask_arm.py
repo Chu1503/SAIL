@@ -21,6 +21,24 @@ from sam2.build_sam import build_sam2
 from sam2.sam2_image_predictor import SAM2ImagePredictor
 
 
+def _component_at(mask, point):
+    """Keep only the connected piece touching the prompt point, discarding any
+    disconnected fragments SAM2 included in the same mask (e.g. a watch band
+    or shadow splitting the arm into separate blobs)."""
+    binary = mask.astype(np.uint8)
+    count, labels, stats, _ = cv2.connectedComponentsWithStats(binary, connectivity=8)
+    if count <= 1:
+        return binary.astype(bool)
+
+    x, y = point
+    x = int(np.clip(x, 0, labels.shape[1] - 1))
+    y = int(np.clip(y, 0, labels.shape[0] - 1))
+    label = int(labels[y, x])
+    if label == 0:
+        label = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
+    return labels == label
+
+
 def _shape_metrics(mask):
     ys, xs = np.where(mask)
     if xs.size < 8:
@@ -57,10 +75,10 @@ def best_arm_mask(predictor, image_rgb):
             multimask_output=True,
         )
         for mask, score in zip(masks, scores):
-            mask_bool = mask.astype(bool)
-            candidate_score = _candidate_score(mask_bool, score)
+            single_component = _component_at(mask.astype(bool), point[0])
+            candidate_score = _candidate_score(single_component, score)
             if candidate_score > best_score:
-                best_mask, best_score = mask_bool, candidate_score
+                best_mask, best_score = single_component, candidate_score
 
     return best_mask
 
