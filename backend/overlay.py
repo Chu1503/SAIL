@@ -8,6 +8,23 @@ def _scaled_radius(shape, fraction, minimum):
     return max(minimum, round(min(shape) * fraction))
 
 
+def enhance_for_display(original_bgr, arm_mask):
+    """Contrast-boost the arm so veins are visibly darker/more defined in the
+    overlay's base image, not just indicated by the green skeleton line.
+    CLAHE runs on the full original (unmasked) frame -- same as what the vein
+    model itself sees -- then the result is restricted to the arm mask, so a
+    sharp black/skin boundary from the mask never distorts the local tiles
+    CLAHE computes contrast over."""
+    gray = cv2.cvtColor(original_bgr, cv2.COLOR_BGR2GRAY)
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+    enhanced = clahe.apply(gray)
+    enhanced_bgr = cv2.cvtColor(enhanced, cv2.COLOR_GRAY2BGR)
+
+    output = np.zeros_like(original_bgr)
+    output[arm_mask] = enhanced_bgr[arm_mask]
+    return output
+
+
 def make_overlay(original_bgr, skeleton, junctions):
     """Draw a clean neon centerline overlay on the isolated input."""
     base = original_bgr.copy()
