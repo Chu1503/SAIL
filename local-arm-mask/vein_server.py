@@ -16,24 +16,32 @@ import cv2
 import numpy as np
 from fastapi import FastAPI, File, HTTPException, UploadFile
 
+from injection_point import find_injection_point, load_fossa_model, predict_fossa
 from vein_extraction import extract_veins, load_vein_model
 
 MODEL_PATH = os.environ.get(
     "CUBITAL_MODEL_PATH",
     os.path.join(os.path.dirname(__file__), "models", "unet.keras"),
 )
+FOSSA_MODEL_PATH = os.environ.get(
+    "CUBITAL_FOSSA_MODEL_PATH",
+    os.path.join(os.path.dirname(__file__), "models", "unet_multi"),
+)
 
 app = FastAPI(title="VEINZ local vein-extraction service (internal)")
 logger = logging.getLogger("veinz.vein-service")
 
 _model = None
+_fossa_infer = None
 
 
 @app.on_event("startup")
 def _load_model():
-    global _model
+    global _model, _fossa_infer
     _model = load_vein_model(MODEL_PATH)
     logger.info("CUBITAL vein model loaded from %s", MODEL_PATH)
+    _fossa_infer = load_fossa_model(FOSSA_MODEL_PATH)
+    logger.info("CUBITAL fossa-localization model loaded from %s", FOSSA_MODEL_PATH)
 
 
 def _encode_mask(mask_bool):
@@ -64,6 +72,15 @@ async def extract_veins_endpoint(
     result = extract_veins(_model, image, arm_mask)
     signal_quality = float(result.response[arm_mask].mean()) if np.any(arm_mask) else 0.0
 
+    fossa_x, fossa_y, fossa_angle = predict_fossa(_fossa_infer, image)
+    injection_point = find_injection_point(
+        result.skeleton,
+        result.endpoints,
+        result.junctions,
+        result.response,
+        fossa_point=(fossa_x, fossa_y),
+    )
+
     return {
         "skeleton": _encode_mask(result.skeleton),
         "endpoints": _encode_mask(result.endpoints),
@@ -73,4 +90,10 @@ async def extract_veins_endpoint(
         "coverage": result.coverage,
         "confidence": result.confidence,
         "signalQuality": signal_quality,
+        "injectionPoint": (
+            {"x": injection_point[0], "y": injection_point[1]}
+            if injection_point is not None
+            else None
+        ),
+        "fossa": {"x": fossa_x, "y": fossa_y, "angle": fossa_angle},
     }

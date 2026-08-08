@@ -25,7 +25,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from mask_arm import inference_autocast, load_predictor, mask_arm
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
-from overlay import make_graph_mask, make_overlay  # noqa: E402
+from overlay import draw_injection_marker, make_graph_mask, make_overlay  # noqa: E402
 
 SAM_CHECKPOINT = os.environ.get(
     "SAM2_CHECKPOINT", "/home/chu/sam2/checkpoints/sam2.1_hiera_base_plus.pt"
@@ -141,6 +141,12 @@ async def process(file: UploadFile = File(...)):
 
     overlay = make_overlay(masked, skeleton, junctions)
     graph = make_graph_mask(skeleton, endpoints, junctions)
+
+    injection_point = vein.get("injectionPoint")
+    if injection_point is not None:
+        overlay = draw_injection_marker(overlay, (injection_point["x"], injection_point["y"]))
+    else:
+        warnings.append("No confident injection point found")
 
     return {
         "original": _to_data_url(img),
