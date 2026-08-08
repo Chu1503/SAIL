@@ -75,6 +75,18 @@ def mask_arm(predictor, image_bgr):
     return output, mask
 
 
+def load_predictor(checkpoint, model_cfg):
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    model = build_sam2(model_cfg, checkpoint, device=device)
+    return SAM2ImagePredictor(model), device
+
+
+def inference_autocast(device):
+    if device == "cuda":
+        return torch.autocast(device, dtype=torch.bfloat16)
+    return torch.autocast("cpu", enabled=False)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("images", nargs="+", help="Input image path(s)")
@@ -87,17 +99,13 @@ def main():
     parser.add_argument("--out-dir", default="out", help="Directory to write masked images to")
     args = parser.parse_args()
 
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    predictor, device = load_predictor(args.checkpoint, args.model_cfg)
     print(f"Using device: {device}")
-
-    model = build_sam2(args.model_cfg, args.checkpoint, device=device)
-    predictor = SAM2ImagePredictor(model)
 
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    autocast = torch.autocast(device, dtype=torch.bfloat16) if device == "cuda" else torch.autocast("cpu", enabled=False)
-    with torch.inference_mode(), autocast:
+    with torch.inference_mode(), inference_autocast(device):
         for image_path in args.images:
             image_bgr = cv2.imread(image_path)
             if image_bgr is None:
