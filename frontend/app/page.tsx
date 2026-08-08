@@ -194,13 +194,13 @@ function Idle({
           External vein imaging
         </p> */}
 
-        <h1 className="mt-4 text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl">
+        {/* <h1 className="mt-4 text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl">
           VEINZ
         </h1>
 
         <p className="mx-auto mt-4 max-w-xs text-sm leading-6 text-neutral-500">
           Short Description
-        </p>
+        </p> */}
       </div>
 
       <div className="mt-auto flex flex-col items-center pb-5 pt-16">
