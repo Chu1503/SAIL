@@ -2,7 +2,7 @@ tensorflow==2.15.1
 keras==2.15.0
 numpy==1.26.4
 scikit-image==0.25.2
-opencv-python-headless==5.0.0.93
+opencv-python-headless==4.10.0.84 
 fastapi
 uvicorn[standard]
 python-multipart

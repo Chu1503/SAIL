@@ -104,7 +104,7 @@ export default function Result({
         </figure>
       </div>
 
-      <div className="mx-auto mt-5 grid w-full max-w-3xl gap-px overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.08] sm:grid-cols-2">
+      {/* <div className="mx-auto mt-5 grid w-full max-w-3xl gap-px overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.08] sm:grid-cols-2">
         <PipelineStage
           label="Arm isolation"
           name={armIsolation.name}
@@ -119,7 +119,7 @@ export default function Result({
           runtime={veinExtraction.runtime}
           fallback={veinExtraction.status === "fallback"}
         />
-      </div>
+      </div> */}
 
       <div className="flex items-end justify-center gap-8 pt-5">
         <div className="flex flex-col items-center gap-2">
