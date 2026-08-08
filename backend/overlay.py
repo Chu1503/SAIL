@@ -9,25 +9,40 @@ def _scaled_radius(shape, fraction, minimum):
 
 
 def make_overlay(original_bgr, skeleton, junctions):
-    """Draw a clean neon centerline overlay on the isolated input."""
+    """Draw a bright cyan neon centerline overlay."""
     base = original_bgr.copy()
+
     line_radius = _scaled_radius(base.shape[:2], 0.0022, 1)
+
     core = cv2.dilate(
         skeleton.astype(np.uint8) * 255,
         cv2.getStructuringElement(
-            cv2.MORPH_ELLIPSE, (line_radius * 2 + 1, line_radius * 2 + 1)
+            cv2.MORPH_ELLIPSE,
+            (line_radius * 2 + 1, line_radius * 2 + 1),
         ),
     )
 
-    glow = cv2.GaussianBlur(core, (0, 0), sigmaX=max(2.5, line_radius * 1.8))
-    glow_alpha = (glow.astype(np.float32) / 255.0 * 0.62)[..., None]
-    green = np.zeros_like(base, dtype=np.float32)
-    green[..., 0] = 95
-    green[..., 1] = 255
-    green[..., 2] = 118
+    glow = cv2.GaussianBlur(
+        core,
+        (0, 0),
+        sigmaX=max(3.0, line_radius * 2.5),
+    )
 
-    output = base.astype(np.float32) * (1.0 - glow_alpha) + green * glow_alpha
-    output[core > 0] = (62, 255, 104)
+    glow_alpha = (
+        glow.astype(np.float32) / 255.0 * 0.85
+    )[..., None]
+
+    cyan = np.zeros_like(base, dtype=np.float32)
+    cyan[..., 0] = 255
+    cyan[..., 1] = 255
+    cyan[..., 2] = 0
+
+    output = (
+        base.astype(np.float32) * (1.0 - glow_alpha)
+        + cyan * glow_alpha
+    )
+
+    output[core > 0] = (255, 255, 0)
 
     return np.clip(output, 0, 255).astype(np.uint8)
 
