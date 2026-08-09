@@ -63,7 +63,7 @@ export default function History({ onBack, onSelect }: Props) {
         <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
           <p className="text-sm text-neutral-500">
             No saved scans yet.
-            it here.
+            
           </p>
         </div>
       )}
