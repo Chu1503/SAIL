@@ -4,15 +4,24 @@
 import { useState, type ChangeEvent } from "react";
 import Camera from "@/components/Camera";
 import Result from "@/components/Result";
+import History from "@/components/History";
 import InstallPrompt from "@/components/InstallPrompt";
+import DisclaimerGate from "@/components/DisclaimerGate";
 import { processImage, type ProcessResult } from "@/lib/api";
 import type { ScanExport } from "@/lib/exportResults";
 
-type Stage = "idle" | "camera" | "processing" | "processingError" | "result";
+type Stage =
+  | "idle"
+  | "camera"
+  | "processing"
+  | "processingError"
+  | "result"
+  | "history";
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("idle");
   const [result, setResult] = useState<ProcessResult | null>(null);
+  const [resultCapturedAt, setResultCapturedAt] = useState("");
   const [completedScans, setCompletedScans] = useState<ScanExport[]>([]);
   const [pendingCapture, setPendingCapture] = useState<Blob | null>(null);
   const [pendingPreview, setPendingPreview] = useState("");
@@ -21,10 +30,23 @@ export default function Home() {
   function goHome() {
     setStage("idle");
     setResult(null);
+    setResultCapturedAt("");
     setCompletedScans([]);
     setPendingCapture(null);
     setPendingPreview("");
     setError("");
+  }
+
+  function openHistory() {
+    setError("");
+    setStage("history");
+  }
+
+  function viewHistoryEntry(capturedAt: string, entryResult: ProcessResult) {
+    setResult(entryResult);
+    setResultCapturedAt(capturedAt);
+    setCompletedScans([{ capturedAt, result: entryResult }]);
+    setStage("result");
   }
 
   function openCamera() {
@@ -43,10 +65,12 @@ export default function Home() {
 
     try {
       const processedResult = await processImage(capturedBlob);
+      const capturedAt = new Date().toISOString();
       setResult(processedResult);
+      setResultCapturedAt(capturedAt);
       setCompletedScans((current) => [
         ...current,
-        { capturedAt: new Date().toISOString(), result: processedResult },
+        { capturedAt, result: processedResult },
       ]);
       setPendingCapture(null);
       setPendingPreview("");
@@ -80,10 +104,19 @@ export default function Home() {
   }
 
   return (
+    <DisclaimerGate>
     <main className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col bg-black">
       {stage === "idle" && (
         <>
-          <header className="flex items-center justify-end">
+          <header className="flex items-center justify-between">
+            <button
+              type="button"
+              onClick={openHistory}
+              aria-label="View saved history"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] transition active:scale-95"
+            >
+              <HistoryIcon />
+            </button>
             <InstallPrompt />
           </header>
 
@@ -112,15 +145,21 @@ export default function Home() {
         />
       )}
 
+      {stage === "history" && (
+        <History onBack={goHome} onSelect={viewHistoryEntry} />
+      )}
+
       {stage === "result" && result && (
         <Result
           data={result}
+          capturedAt={resultCapturedAt}
           scans={completedScans}
           onHome={goHome}
           onRestart={openCamera}
         />
       )}
     </main>
+    </DisclaimerGate>
   );
 }
 
@@ -195,7 +234,7 @@ function Idle({
         </p> */}
 
         {/* <h1 className="mt-4 text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl">
-          VEINZ
+          VeinSight
         </h1>
 
         <p className="mx-auto mt-4 max-w-xs text-sm leading-6 text-neutral-500">
@@ -228,6 +267,25 @@ function Idle({
 
       </div>
     </section>
+  );
+}
+
+function HistoryIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M3 12a9 9 0 1 0 2.6-6.35" />
+      <path d="M3 4v6h6" />
+      <path d="M12 8v4l3 2" />
+    </svg>
   );
 }
 

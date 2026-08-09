@@ -25,6 +25,7 @@ Desktop.ini
 !.env.*.example
 
 *.jks
+keystore.properties
 *.keystore
 *.p12
 *.pfx

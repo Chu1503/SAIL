@@ -10,12 +10,12 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "VEINZ",
+  title: "VeinSight",
   description: "",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "VEINZ",
+    title: "VeinSight",
   },
 };
 

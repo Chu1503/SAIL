@@ -72,7 +72,7 @@ export default function InstallPrompt() {
             onClick={() => setShowSheet(false)}
           >
             <div className="w-full max-w-md bg-neutral-950 p-6 text-center">
-              <p className="text-sm font-medium text-neutral-100">Install VEINZ</p>
+              <p className="text-sm font-medium text-neutral-100">Install VeinSight</p>
               <p className="mt-2 text-xs text-neutral-400">
                 Tap the Share icon in Safari, then choose &ldquo;Add to Home Screen&rdquo;.
               </p>

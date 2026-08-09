@@ -7,9 +7,11 @@ import {
   type ExportReceipt,
   type ScanExport,
 } from "@/lib/exportResults";
+import { saveToHistory } from "@/lib/history";
 
 type Props = {
   data: ProcessResult;
+  capturedAt: string;
   scans: ScanExport[];
   onHome: () => void;
   onRestart: () => void;
@@ -18,6 +20,7 @@ type Props = {
 
 export default function Result({
   data,
+  capturedAt,
   scans,
   onHome,
   onRestart,
@@ -26,6 +29,8 @@ export default function Result({
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
   const [saveError, setSaveError] = useState("");
+  const [savingHistory, setSavingHistory] = useState(false);
+  const [historySaved, setHistorySaved] = useState(false);
   const armIsolation = data.analysis.pipeline?.armIsolation ?? {
     name: data.analysis.armSegmentation?.method ?? "Unknown",
     tier: "Legacy response",
@@ -58,6 +63,18 @@ export default function Result({
       );
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function saveHistory() {
+    setSavingHistory(true);
+    try {
+      await saveToHistory(capturedAt || new Date().toISOString(), data);
+      setHistorySaved(true);
+    } catch (error) {
+      console.error("Saving to history failed:", error);
+    } finally {
+      setSavingHistory(false);
     }
   }
 
@@ -121,7 +138,7 @@ export default function Result({
         />
       </div> */}
 
-      <div className="flex items-end justify-center gap-8 pt-5">
+      <div className="flex items-end justify-center gap-6 pt-5">
         <div className="flex flex-col items-center gap-2">
           <button
             type="button"
@@ -169,6 +186,26 @@ export default function Result({
 
           <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-600">
             Save images
+          </span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+          <button
+            type="button"
+            onClick={() => void saveHistory()}
+            disabled={savingHistory || historySaved}
+            aria-label={historySaved ? "Saved to history" : "Save to history"}
+            className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 transition active:scale-95 disabled:cursor-default disabled:opacity-50"
+          >
+            {savingHistory ? (
+              <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-emerald-400" />
+            ) : (
+              <BookmarkIcon filled={historySaved} />
+            )}
+          </button>
+
+          <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-600">
+            {historySaved ? "Saved" : "Save to history"}
           </span>
         </div>
       </div>
@@ -299,6 +336,23 @@ function SaveIcon() {
       <path d="m7 10 5 5 5-5" />
       <path d="M5 21h14a2 2 0 0 0 2-2v-3" />
       <path d="M3 16v3a2 2 0 0 0 2 2" />
+    </svg>
+  );
+}
+
+function BookmarkIcon({ filled }: { filled: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill={filled ? "currentColor" : "none"}
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1Z" />
     </svg>
   );
 }

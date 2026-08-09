@@ -5,9 +5,9 @@ export const dynamic = "force-static";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "VEINZ — Vein Visualizer",
-    short_name: "VEINZ",
-    description: "Near-infrared vein visualization and mapping",
+    name: "VeinSight Vein Visualizer",
+    short_name: "VeinSight",
+    description: "Near infrared vein visualization and mapping",
     start_url: "/",
     scope: "/",
     display: "standalone",

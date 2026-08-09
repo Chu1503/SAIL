@@ -14,7 +14,7 @@ export type ExportReceipt = {
   location: string;
 };
 
-const EXPORT_ROOT = "VEINZ_Exports";
+const EXPORT_ROOT = "VeinSight_Exports";
 
 const imageFiles: Array<{
   name: string;
@@ -110,7 +110,7 @@ export async function exportScans(scans: ScanExport[]): Promise<ExportReceipt> {
     throw new Error("There are no scan images to save");
   }
 
-  const batchName = `VEINZ_Export_${compactTimestamp(new Date())}`;
+  const batchName = `VeinSight_Export_${compactTimestamp(new Date())}`;
   const location = Capacitor.isNativePlatform()
     ? await saveNative(scans, batchName)
     : await saveWeb(scans, batchName);

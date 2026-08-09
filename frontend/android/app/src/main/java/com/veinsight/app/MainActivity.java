@@ -1,4 +1,4 @@
-package com.veinz.app;
+package com.veinsight.app;
 
 import com.getcapacitor.BridgeActivity;
 
