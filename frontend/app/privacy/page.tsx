@@ -42,7 +42,7 @@ export default function PrivacyPolicy() {
         </p>
         <ul className="mt-2 list-disc space-y-1 pl-5">
           <li>
-            <strong className="text-neutral-200">Save images</strong> writes
+            <strong className="text-neutral-200">Save images </strong> writes
             the result images to your device&rsquo;s local storage (or
             triggers a download in your browser). This never touches our
             servers.

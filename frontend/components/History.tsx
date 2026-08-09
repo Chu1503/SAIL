@@ -62,7 +62,7 @@ export default function History({ onBack, onSelect }: Props) {
       {entries !== null && entries.length === 0 && (
         <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
           <p className="text-sm text-neutral-500">
-            No saved scans yet. Tap &ldquo;Save to history&rdquo; on a result to keep
+            No saved scans yet.
             it here.
           </p>
         </div>

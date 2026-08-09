@@ -183,13 +183,11 @@ function ProcessingError({
           className="mb-7 aspect-[8/5] max-h-[45dvh] w-full max-w-xl rounded-2xl border border-white/10 object-contain"
         />
       )}
-      <h2 className="text-xl font-semibold text-white">Processing interrupted</h2>
-      <p className="mt-3 max-w-md text-sm leading-6 text-neutral-500">
-        Your capture has been kept. It was not rejected for image quality.
-      </p>
-      <p className="mt-2 max-w-md text-xs leading-5 text-red-400/80">
+      <h2 className="text-xl font-semibold text-white">Processing interrupted. Please try again later.</h2>
+      
+      {/* <p className="mt-2 max-w-md text-xs leading-5 text-red-400/80">
         {message}
-      </p>
+      </p> */}
       <div className="mt-7 flex items-center gap-4">
         <button
           type="button"
