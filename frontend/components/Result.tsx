@@ -68,8 +68,8 @@ export default function Result({
   }
 
   return (
-    <section className="flex min-h-dvh flex-col bg-black px-1 pt-1 pb-2">
-      <header className="pb-1">
+    <section className="flex flex-1 flex-col bg-black px-1">
+      <header className="pb-3">
         <button
           type="button"
           onClick={onHome}
@@ -110,7 +110,7 @@ export default function Result({
         </figure>
       </div>
 
-      <div className="flex items-center justify-center gap-4 pt-2">
+      <div className="flex items-center justify-center gap-4 pt-4">
         <div className="flex flex-col items-center gap-1.5">
           <button
             type="button"
@@ -125,23 +125,6 @@ export default function Result({
             {showGraph ? "Overlay" : "Graph"}
           </span>
         </div>
-
-        {!hideCaptureActions && (
-          <div className="flex flex-col items-center gap-1.5">
-            <button
-              type="button"
-              onClick={onRestart}
-              aria-label="Start a new scan"
-              className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-400 text-black transition active:scale-95"
-            >
-              <ScanIcon />
-            </button>
-
-            <span className="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-500">
-              New scan
-            </span>
-          </div>
-        )}
 
         <div className="flex flex-col items-center gap-1.5">
           <button
@@ -181,6 +164,23 @@ export default function Result({
 
             <span className="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-600">
               {historySaved ? "Saved" : "Save"}
+            </span>
+          </div>
+        )}
+
+        {!hideCaptureActions && (
+          <div className="flex flex-col items-center gap-1.5">
+            <button
+              type="button"
+              onClick={onRestart}
+              aria-label="Start a new scan"
+              className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-400 text-black transition active:scale-95"
+            >
+              <ScanIcon />
+            </button>
+
+            <span className="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-500">
+              New scan
             </span>
           </div>
         )}
