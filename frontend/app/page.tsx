@@ -48,6 +48,19 @@ export default function Home() {
     setStage("history");
   }
 
+  function backFromResult() {
+    if (viewingFromHistory) {
+      setResult(null);
+      setResultCapturedAt("");
+      setCompletedScans([]);
+      setViewingFromHistory(false);
+      setViewedHistoryId("");
+      setStage("history");
+    } else {
+      goHome();
+    }
+  }
+
   function viewHistoryEntry(entry: HistoryEntry) {
     setResult(entry.result);
     setResultCapturedAt(entry.capturedAt);
@@ -176,7 +189,7 @@ export default function Home() {
           data={result}
           capturedAt={resultCapturedAt}
           scans={completedScans}
-          onHome={goHome}
+          onHome={backFromResult}
           onRestart={openCamera}
           hideCaptureActions={viewingFromHistory}
           onDeleteFromHistory={
