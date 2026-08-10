@@ -68,8 +68,8 @@ export default function Result({
   }
 
   return (
-    <section className="flex min-h-dvh flex-col bg-black px-1 py-3">
-      <header className="pb-3">
+    <section className="flex min-h-dvh flex-col bg-black px-1 pt-1 pb-2">
+      <header className="pb-1">
         <button
           type="button"
           onClick={onHome}
@@ -80,7 +80,7 @@ export default function Result({
         </button>
       </header>
 
-      <div className="grid flex-1 content-center gap-3 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2">
         <figure>
           <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-neutral-950">
             <img
@@ -110,7 +110,7 @@ export default function Result({
         </figure>
       </div>
 
-      <div className="flex items-center justify-center gap-4 pt-4">
+      <div className="flex items-center justify-center gap-4 pt-2">
         <div className="flex flex-col items-center gap-1.5">
           <button
             type="button"
@@ -180,7 +180,7 @@ export default function Result({
             </button>
 
             <span className="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-600">
-              {historySaved ? "Saved" : "Save to history"}
+              {historySaved ? "Saved" : "Save"}
             </span>
           </div>
         )}
