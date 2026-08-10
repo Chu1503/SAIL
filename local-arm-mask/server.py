@@ -15,12 +15,17 @@ import logging
 import os
 import sys
 
+import anyio
 import cv2
 import numpy as np
 import requests
 import torch
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
+from starlette.middleware.gzip import GZipMiddleware
 
 from mask_arm import inference_autocast, load_predictor, mask_arm
 
@@ -37,9 +42,22 @@ SAM_CHECKPOINT = os.environ.get(
 )
 SAM_MODEL_CFG = os.environ.get("SAM2_MODEL_CFG", "configs/sam2.1/sam2.1_hiera_b+.yaml")
 VEIN_SERVICE_URL = os.environ.get("VEIN_SERVICE_URL", "http://127.0.0.1:8001")
+MAX_UPLOAD_BYTES = 15 * 1024 * 1024  # 15 MB: generous for a phone/webcam capture
 
 app = FastAPI(title="VEINZ local server")
 logger = logging.getLogger("veinz.local")
+
+# This server is reachable from the public internet through the ngrok
+# tunnel, and /process runs real GPU inference (SAM2 + a call out to
+# CUBITAL) per request. Without a cap, anyone who finds the tunnel URL could
+# tie up the home GPU indefinitely.
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# The /process response embeds several full-resolution PNGs as base64 JSON;
+# gzip meaningfully cuts what has to cross the tunnel on every capture.
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 allowed_origins = [
     "http://localhost:3000",
@@ -53,7 +71,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
 
@@ -97,14 +115,9 @@ def health():
     return {"status": "ok", "device": _device}
 
 
-@app.post("/process")
-async def process(file: UploadFile = File(...)):
-    data = await file.read()
-    arr = np.frombuffer(data, np.uint8)
-    img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
-    if img is None:
-        raise HTTPException(status_code=400, detail="Could not decode uploaded image")
-
+def _run_pipeline(img):
+    """SAM2 arm isolation + a blocking call out to the CUBITAL vein service.
+    Run off the event loop thread -- see the /process handler."""
     with torch.inference_mode(), inference_autocast(_device):
         masked, mask = mask_arm(_predictor, img)
 
@@ -184,3 +197,24 @@ async def process(file: UploadFile = File(...)):
             },
         },
     }
+
+
+@app.post("/process")
+@limiter.limit("10/minute")
+async def process(request: Request, file: UploadFile = File(...)):
+    if file.content_type is None or not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=415, detail="Uploaded file must be an image")
+
+    data = await file.read()
+    if len(data) > MAX_UPLOAD_BYTES:
+        raise HTTPException(
+            status_code=413,
+            detail=f"Image too large; max {MAX_UPLOAD_BYTES // (1024 * 1024)} MB",
+        )
+
+    arr = np.frombuffer(data, np.uint8)
+    img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+    if img is None:
+        raise HTTPException(status_code=400, detail="Could not decode uploaded image")
+
+    return await anyio.to_thread.run_sync(_run_pipeline, img)

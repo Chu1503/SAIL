@@ -2,10 +2,15 @@
 import base64
 import logging
 
+import anyio
 import cv2
 import numpy as np
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
+from starlette.middleware.gzip import GZipMiddleware
 
 from preprocessing import prepare_image
 from vessel_detection import detect_vessel_graph
@@ -13,6 +18,20 @@ from overlay import make_graph_mask, make_overlay
 
 app = FastAPI(title="VEINZ API")
 logger = logging.getLogger("veinz")
+
+# Each /process response embeds several full-resolution PNGs as base64 JSON
+# strings (often multiple MB); gzip cuts that transfer size substantially.
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+
+# /process runs real GPU/CPU model inference per request and this server is
+# publicly reachable, so it needs a cap to avoid one caller exhausting the
+# host's resources or quota. In-memory limiter is fine for a single-process
+# deployment like this one (no shared state needed across workers).
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+MAX_UPLOAD_BYTES = 15 * 1024 * 1024  # 15 MB: generous for a phone/webcam capture
 
 allowed_origins = [
     "http://localhost:3000",
@@ -26,7 +45,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
 
@@ -191,22 +210,9 @@ def _fallback_result(img, error):
     }
 
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-
-@app.post("/process")
-async def process(file: UploadFile = File(...)):
-    data = await file.read()
-    arr = np.frombuffer(data, np.uint8)
-    img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
-    if img is None:
-        raise HTTPException(
-            status_code=400,
-            detail="Could not decode uploaded image",
-        )
-
+def _run_pipeline(img):
+    """The actual (blocking, CPU-bound) processing pipeline. Run off the
+    event loop thread -- see the /process handler."""
     try:
         prepared = prepare_image(img)
         vessels = detect_vessel_graph(
@@ -274,3 +280,32 @@ async def process(file: UploadFile = File(...)):
             },
         },
     }
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+
+@app.post("/process")
+@limiter.limit("10/minute")
+async def process(request: Request, file: UploadFile = File(...)):
+    if file.content_type is None or not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=415, detail="Uploaded file must be an image")
+
+    data = await file.read()
+    if len(data) > MAX_UPLOAD_BYTES:
+        raise HTTPException(
+            status_code=413,
+            detail=f"Image too large; max {MAX_UPLOAD_BYTES // (1024 * 1024)} MB",
+        )
+
+    arr = np.frombuffer(data, np.uint8)
+    img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+    if img is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Could not decode uploaded image",
+        )
+
+    return await anyio.to_thread.run_sync(_run_pipeline, img)

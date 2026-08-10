@@ -8,6 +8,7 @@ import History from "@/components/History";
 import InstallPrompt from "@/components/InstallPrompt";
 import DisclaimerGate from "@/components/DisclaimerGate";
 import { processImage, type ProcessResult } from "@/lib/api";
+import { compressImage } from "@/lib/compressImage";
 import type { ScanExport } from "@/lib/exportResults";
 
 type Stage =
@@ -86,10 +87,13 @@ export default function Home() {
     }
   }
 
-  function handleCapture(capturedBlob: Blob, capturedUrl: string) {
-    setPendingCapture(capturedBlob);
+  async function handleCapture(capturedBlob: Blob, capturedUrl: string) {
     setPendingPreview(capturedUrl);
-    void processCapture(capturedBlob);
+    setStage("processing");
+
+    const uploadBlob = await compressImage(capturedBlob);
+    setPendingCapture(uploadBlob);
+    void processCapture(uploadBlob);
   }
 
   function handleUpload(file: File) {
@@ -132,7 +136,7 @@ export default function Home() {
         <Camera onCapture={handleCapture} onCancel={cancelCamera} />
       )}
 
-      {stage === "processing" && <LoadingScreen />}
+      {stage === "processing" && <LoadingScreen preview={pendingPreview} />}
 
       {stage === "processingError" && (
         <ProcessingError
@@ -287,9 +291,16 @@ function HistoryIcon() {
   );
 }
 
-function LoadingScreen() {
+function LoadingScreen({ preview }: { preview: string }) {
   return (
     <section className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+      {preview && (
+        <img
+          src={preview}
+          alt="Captured image being processed"
+          className="absolute inset-0 h-full w-full object-cover opacity-30 blur-sm"
+        />
+      )}
       <div className="relative h-16 w-16">
         <div className="absolute inset-0 rounded-full border border-white/10" />
         <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-emerald-400 border-r-emerald-400/40" />

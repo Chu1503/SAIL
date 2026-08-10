@@ -17,6 +17,11 @@ export default function DisclaimerGate({
   const [acknowledged, setAcknowledged] = useState(false);
 
   useEffect(() => {
+    // This is a static export with no real server render, so localStorage
+    // must be read post-mount, not in a lazy useState initializer (that
+    // would run during the build's static prerender pass too, where
+    // window does not exist, and risks a hydration mismatch).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAcknowledged(window.localStorage.getItem(ACK_KEY) === "1");
     setReady(true);
   }, []);

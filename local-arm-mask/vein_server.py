@@ -12,9 +12,14 @@ import base64
 import logging
 import os
 
+import anyio
 import cv2
 import numpy as np
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, Request, UploadFile
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
+from starlette.middleware.gzip import GZipMiddleware
 
 from injection_point import find_injection_point, load_fossa_model, predict_fossa
 from vein_extraction import extract_veins, load_vein_model
@@ -27,9 +32,20 @@ FOSSA_MODEL_PATH = os.environ.get(
     "CUBITAL_FOSSA_MODEL_PATH",
     os.path.join(os.path.dirname(__file__), "models", "unet_multi"),
 )
+MAX_UPLOAD_BYTES = 15 * 1024 * 1024  # 15 MB, matches server.py's own cap
 
 app = FastAPI(title="VEINZ local vein-extraction service (internal)")
 logger = logging.getLogger("veinz.vein-service")
+
+# Only server.py calls this (localhost only, never exposed to the internet
+# directly), which is already rate limited itself -- this is a defense in
+# depth backstop, not the primary control, so the bound is looser than
+# server.py's public-facing limit.
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 _model = None
 _fossa_infer = None
@@ -56,19 +72,9 @@ def health():
     return {"status": "ok"}
 
 
-@app.post("/extract-veins")
-async def extract_veins_endpoint(
-    file: UploadFile = File(...), mask: UploadFile = File(...)
-):
-    image_bytes = await file.read()
-    mask_bytes = await mask.read()
-
-    image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_COLOR)
-    mask_img = cv2.imdecode(np.frombuffer(mask_bytes, np.uint8), cv2.IMREAD_GRAYSCALE)
-    if image is None or mask_img is None:
-        raise HTTPException(status_code=400, detail="Could not decode image or mask")
-
-    arm_mask = mask_img > 0
+def _run_extraction(image, arm_mask):
+    """CUBITAL vein extraction + fossa localization (blocking TensorFlow
+    inference). Run off the event loop thread -- see the endpoint below."""
     result = extract_veins(_model, image, arm_mask)
     signal_quality = float(result.response[arm_mask].mean()) if np.any(arm_mask) else 0.0
 
@@ -97,3 +103,29 @@ async def extract_veins_endpoint(
         ),
         "fossa": {"x": fossa_x, "y": fossa_y, "angle": fossa_angle},
     }
+
+
+@app.post("/extract-veins")
+@limiter.limit("20/minute")
+async def extract_veins_endpoint(
+    request: Request, file: UploadFile = File(...), mask: UploadFile = File(...)
+):
+    for upload in (file, mask):
+        if upload.content_type is None or not upload.content_type.startswith("image/"):
+            raise HTTPException(status_code=415, detail="Uploaded files must be images")
+
+    image_bytes = await file.read()
+    mask_bytes = await mask.read()
+    if len(image_bytes) > MAX_UPLOAD_BYTES or len(mask_bytes) > MAX_UPLOAD_BYTES:
+        raise HTTPException(
+            status_code=413,
+            detail=f"Image too large; max {MAX_UPLOAD_BYTES // (1024 * 1024)} MB",
+        )
+
+    image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_COLOR)
+    mask_img = cv2.imdecode(np.frombuffer(mask_bytes, np.uint8), cv2.IMREAD_GRAYSCALE)
+    if image is None or mask_img is None:
+        raise HTTPException(status_code=400, detail="Could not decode image or mask")
+
+    arm_mask = mask_img > 0
+    return await anyio.to_thread.run_sync(_run_extraction, image, arm_mask)
