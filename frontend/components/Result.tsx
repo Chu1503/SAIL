@@ -8,6 +8,7 @@ import {
   type ScanExport,
 } from "@/lib/exportResults";
 import { saveToHistory } from "@/lib/history";
+import ConfirmDialog from "@/components/ConfirmDialog";
 
 type Props = {
   data: ProcessResult;
@@ -16,6 +17,7 @@ type Props = {
   onHome: () => void;
   onRestart: () => void;
   hideCaptureActions?: boolean;
+  onDeleteFromHistory?: () => void;
 };
 
 export default function Result({
@@ -25,6 +27,7 @@ export default function Result({
   onHome,
   onRestart,
   hideCaptureActions = false,
+  onDeleteFromHistory,
 }: Props) {
   const [showGraph, setShowGraph] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -32,6 +35,7 @@ export default function Result({
   const [saveError, setSaveError] = useState("");
   const [savingHistory, setSavingHistory] = useState(false);
   const [historySaved, setHistorySaved] = useState(false);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   async function saveImages() {
     setSaving(true);
@@ -146,6 +150,23 @@ export default function Result({
           </span>
         </div>
 
+        {onDeleteFromHistory && (
+          <div className="flex flex-col items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setConfirmDeleteOpen(true)}
+              aria-label="Delete from history"
+              className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 text-red-400 transition active:scale-95"
+            >
+              <TrashIcon />
+            </button>
+
+            <span className="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-600">
+              Delete
+            </span>
+          </div>
+        )}
+
         {!hideCaptureActions && (
           <div className="flex flex-col items-center gap-1.5">
             <button
@@ -196,6 +217,19 @@ export default function Result({
           </span>
         )}
       </div>
+
+      {onDeleteFromHistory && (
+        <ConfirmDialog
+          open={confirmDeleteOpen}
+          title="Delete this scan?"
+          message="This will remove it from your history. This cannot be undone."
+          onConfirm={() => {
+            setConfirmDeleteOpen(false);
+            onDeleteFromHistory();
+          }}
+          onCancel={() => setConfirmDeleteOpen(false)}
+        />
+      )}
     </section>
   );
 }
@@ -290,6 +324,25 @@ function BookmarkIcon({ filled }: { filled: boolean }) {
       aria-hidden="true"
     >
       <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1Z" />
+    </svg>
+  );
+}
+
+function TrashIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M3 6h18" />
+      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
     </svg>
   );
 }

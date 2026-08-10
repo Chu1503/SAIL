@@ -10,6 +10,7 @@ import DisclaimerGate from "@/components/DisclaimerGate";
 import { processImage, type ProcessResult } from "@/lib/api";
 import { compressImage } from "@/lib/compressImage";
 import type { ScanExport } from "@/lib/exportResults";
+import { deleteFromHistory, type HistoryEntry } from "@/lib/history";
 
 type Stage =
   | "idle"
@@ -28,6 +29,7 @@ export default function Home() {
   const [pendingPreview, setPendingPreview] = useState("");
   const [error, setError] = useState("");
   const [viewingFromHistory, setViewingFromHistory] = useState(false);
+  const [viewedHistoryId, setViewedHistoryId] = useState("");
 
   function goHome() {
     setStage("idle");
@@ -38,6 +40,7 @@ export default function Home() {
     setPendingPreview("");
     setError("");
     setViewingFromHistory(false);
+    setViewedHistoryId("");
   }
 
   function openHistory() {
@@ -45,12 +48,24 @@ export default function Home() {
     setStage("history");
   }
 
-  function viewHistoryEntry(capturedAt: string, entryResult: ProcessResult) {
-    setResult(entryResult);
-    setResultCapturedAt(capturedAt);
-    setCompletedScans([{ capturedAt, result: entryResult }]);
+  function viewHistoryEntry(entry: HistoryEntry) {
+    setResult(entry.result);
+    setResultCapturedAt(entry.capturedAt);
+    setCompletedScans([{ capturedAt: entry.capturedAt, result: entry.result }]);
     setViewingFromHistory(true);
+    setViewedHistoryId(entry.id);
     setStage("result");
+  }
+
+  async function deleteViewedFromHistory() {
+    if (!viewedHistoryId) return;
+    await deleteFromHistory(viewedHistoryId);
+    setResult(null);
+    setResultCapturedAt("");
+    setCompletedScans([]);
+    setViewingFromHistory(false);
+    setViewedHistoryId("");
+    setStage("history");
   }
 
   function openCamera() {
@@ -164,6 +179,9 @@ export default function Home() {
           onHome={goHome}
           onRestart={openCamera}
           hideCaptureActions={viewingFromHistory}
+          onDeleteFromHistory={
+            viewingFromHistory ? () => void deleteViewedFromHistory() : undefined
+          }
         />
       )}
     </main>

@@ -73,3 +73,17 @@ export async function deleteFromHistory(id: string): Promise<void> {
   });
   db.close();
 }
+
+export async function deleteManyFromHistory(ids: string[]): Promise<void> {
+  if (ids.length === 0) return;
+
+  const db = await openDatabase();
+  await new Promise<void>((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    const store = tx.objectStore(STORE_NAME);
+    for (const id of ids) store.delete(id);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+  db.close();
+}
