@@ -157,8 +157,14 @@ export default function Home() {
 
           <Idle onStart={openCamera} onUpload={handleUpload} />
 
-          <footer className="mt-auto pt-8 text-center text-[10px] font-medium uppercase tracking-[0.3em] text-neutral-700">
-            SAIL
+          <footer className="mt-auto flex items-center justify-center gap-3 pt-8 text-[10px] font-medium uppercase tracking-[0.2em] text-neutral-600">
+            <a href="/privacy" className="transition hover:text-neutral-300">
+              Privacy Policy
+            </a>
+            <span className="text-neutral-800">·</span>
+            <a href="/terms" className="transition hover:text-neutral-300">
+              Terms &amp; Disclaimer
+            </a>
           </footer>
         </>
       )}

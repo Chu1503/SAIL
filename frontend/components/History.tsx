@@ -76,7 +76,7 @@ export default function History({ onBack, onSelect }: Props) {
   }
 
   return (
-    <section className="flex min-h-dvh flex-col">
+    <section className="flex flex-1 flex-col">
       <header className="flex items-center justify-between gap-4 pb-5">
         <div className="flex items-center gap-4">
           <button
