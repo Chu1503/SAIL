@@ -27,6 +27,7 @@ export default function Home() {
   const [pendingCapture, setPendingCapture] = useState<Blob | null>(null);
   const [pendingPreview, setPendingPreview] = useState("");
   const [error, setError] = useState("");
+  const [viewingFromHistory, setViewingFromHistory] = useState(false);
 
   function goHome() {
     setStage("idle");
@@ -36,6 +37,7 @@ export default function Home() {
     setPendingCapture(null);
     setPendingPreview("");
     setError("");
+    setViewingFromHistory(false);
   }
 
   function openHistory() {
@@ -47,6 +49,7 @@ export default function Home() {
     setResult(entryResult);
     setResultCapturedAt(capturedAt);
     setCompletedScans([{ capturedAt, result: entryResult }]);
+    setViewingFromHistory(true);
     setStage("result");
   }
 
@@ -136,7 +139,7 @@ export default function Home() {
         <Camera onCapture={handleCapture} onCancel={cancelCamera} />
       )}
 
-      {stage === "processing" && <LoadingScreen preview={pendingPreview} />}
+      {stage === "processing" && <LoadingScreen />}
 
       {stage === "processingError" && (
         <ProcessingError
@@ -160,6 +163,7 @@ export default function Home() {
           scans={completedScans}
           onHome={goHome}
           onRestart={openCamera}
+          hideCaptureActions={viewingFromHistory}
         />
       )}
     </main>
@@ -291,16 +295,9 @@ function HistoryIcon() {
   );
 }
 
-function LoadingScreen({ preview }: { preview: string }) {
+function LoadingScreen() {
   return (
     <section className="fixed inset-0 z-50 flex items-center justify-center bg-black">
-      {preview && (
-        <img
-          src={preview}
-          alt="Captured image being processed"
-          className="absolute inset-0 h-full w-full object-cover opacity-30 blur-sm"
-        />
-      )}
       <div className="relative h-16 w-16">
         <div className="absolute inset-0 rounded-full border border-white/10" />
         <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-emerald-400 border-r-emerald-400/40" />

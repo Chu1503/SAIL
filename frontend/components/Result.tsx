@@ -15,7 +15,7 @@ type Props = {
   scans: ScanExport[];
   onHome: () => void;
   onRestart: () => void;
-  // onNewScan: () => void;
+  hideCaptureActions?: boolean;
 };
 
 export default function Result({
@@ -24,6 +24,7 @@ export default function Result({
   scans,
   onHome,
   onRestart,
+  hideCaptureActions = false,
 }: Props) {
   const [showGraph, setShowGraph] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -31,18 +32,6 @@ export default function Result({
   const [saveError, setSaveError] = useState("");
   const [savingHistory, setSavingHistory] = useState(false);
   const [historySaved, setHistorySaved] = useState(false);
-  const armIsolation = data.analysis.pipeline?.armIsolation ?? {
-    name: data.analysis.armSegmentation?.method ?? "Unknown",
-    tier: "Legacy response",
-    runtime: "CPU",
-    status: "fallback" as const,
-  };
-  const veinExtraction = data.analysis.pipeline?.veinExtraction ?? {
-    name: "Frangi + Sato + multiscale black-hat",
-    tier: "Training-free",
-    runtime: "CPU",
-    status: "primary" as const,
-  };
 
   async function saveImages() {
     setSaving(true);
@@ -79,67 +68,50 @@ export default function Result({
   }
 
   return (
-    <section className="flex min-h-[calc(100dvh-3rem)] flex-col">
-      <header className="pb-5">
+    <section className="flex min-h-dvh flex-col bg-black px-1 py-3">
+      <header className="pb-3">
         <button
           type="button"
           onClick={onHome}
           aria-label="Back to home"
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] transition active:scale-95"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] transition active:scale-95"
         >
           <BackIcon />
         </button>
       </header>
 
-      <div className="grid flex-1 content-center gap-5 sm:grid-cols-2">
+      <div className="grid flex-1 content-center gap-3 sm:grid-cols-2">
         <figure>
-          <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-neutral-950 shadow-2xl shadow-black">
+          <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-neutral-950">
             <img
               src={data.original}
               alt="Original input"
-              className="aspect-[8/5] max-h-[55dvh] w-full object-contain"
+              className="aspect-[8/5] max-h-[32dvh] w-full object-contain sm:max-h-[50dvh]"
             />
           </div>
 
-          <figcaption className="mt-3 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-600">
+          <figcaption className="mt-2 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-600">
             Input
           </figcaption>
         </figure>
 
         <figure>
-          <div className="overflow-hidden rounded-2xl border border-emerald-400/20 bg-neutral-950 shadow-[0_20px_70px_rgba(16,185,129,0.08)]">
+          <div className="overflow-hidden rounded-2xl border border-emerald-400/20 bg-neutral-950">
             <img
               src={showGraph ? data.graph : data.overlay}
               alt={showGraph ? "Probable vein graph" : "Probable veins overlay"}
-              className="aspect-[8/5] max-h-[55dvh] w-full object-contain"
+              className="aspect-[8/5] max-h-[32dvh] w-full object-contain sm:max-h-[50dvh]"
             />
           </div>
 
-          <figcaption className="mt-3 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-emerald-400">
+          <figcaption className="mt-2 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-emerald-400">
             {showGraph ? "Vein graph" : "Vein overlay"}
           </figcaption>
         </figure>
       </div>
 
-      {/* <div className="mx-auto mt-5 grid w-full max-w-3xl gap-px overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.08] sm:grid-cols-2">
-        <PipelineStage
-          label="Arm isolation"
-          name={armIsolation.name}
-          tier={armIsolation.tier}
-          runtime={armIsolation.runtime}
-          fallback={armIsolation.status === "fallback"}
-        />
-        <PipelineStage
-          label="Vein extraction"
-          name={veinExtraction.name}
-          tier={veinExtraction.tier}
-          runtime={veinExtraction.runtime}
-          fallback={veinExtraction.status === "fallback"}
-        />
-      </div> */}
-
-      <div className="flex items-end justify-center gap-6 pt-5">
-        <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center justify-center gap-4 pt-4">
+        <div className="flex flex-col items-center gap-1.5">
           <button
             type="button"
             onClick={() => setShowGraph((current) => !current)}
@@ -149,32 +121,34 @@ export default function Result({
             <LayersIcon />
           </button>
 
-          <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-600">
+          <span className="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-600">
             {showGraph ? "Overlay" : "Graph"}
           </span>
         </div>
 
-        <div className="flex flex-col items-center gap-2">
-          <button
-            type="button"
-            onClick={onRestart}
-            aria-label="Start a new scan"
-            className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-400 text-black shadow-[0_0_40px_rgba(52,211,153,0.12)] transition active:scale-95"
-          >
-            <ScanIcon />
-          </button>
+        {!hideCaptureActions && (
+          <div className="flex flex-col items-center gap-1.5">
+            <button
+              type="button"
+              onClick={onRestart}
+              aria-label="Start a new scan"
+              className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-400 text-black transition active:scale-95"
+            >
+              <ScanIcon />
+            </button>
 
-          <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-500">
-            New scan
-          </span>
-        </div>
+            <span className="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-500">
+              New scan
+            </span>
+          </div>
+        )}
 
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-1.5">
           <button
             type="button"
             onClick={saveImages}
             disabled={saving}
-            aria-label={`Save ${scans.length} scan${scans.length === 1 ? "" : "s"}`}
+            aria-label={`Download ${scans.length} scan${scans.length === 1 ? "" : "s"}`}
             className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 transition active:scale-95 disabled:cursor-wait disabled:opacity-50"
           >
             {saving ? (
@@ -184,30 +158,32 @@ export default function Result({
             )}
           </button>
 
-          <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-600">
-            Save images
+          <span className="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-600">
+            Download
           </span>
         </div>
 
-        <div className="flex flex-col items-center gap-2">
-          <button
-            type="button"
-            onClick={() => void saveHistory()}
-            disabled={savingHistory || historySaved}
-            aria-label={historySaved ? "Saved to history" : "Save to history"}
-            className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 transition active:scale-95 disabled:cursor-default disabled:opacity-50"
-          >
-            {savingHistory ? (
-              <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-emerald-400" />
-            ) : (
-              <BookmarkIcon filled={historySaved} />
-            )}
-          </button>
+        {!hideCaptureActions && (
+          <div className="flex flex-col items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => void saveHistory()}
+              disabled={savingHistory || historySaved}
+              aria-label={historySaved ? "Saved to history" : "Save to history"}
+              className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 transition active:scale-95 disabled:cursor-default disabled:opacity-50"
+            >
+              {savingHistory ? (
+                <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-emerald-400" />
+              ) : (
+                <BookmarkIcon filled={historySaved} />
+              )}
+            </button>
 
-          <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-600">
-            {historySaved ? "Saved" : "Save to history"}
-          </span>
-        </div>
+            <span className="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-600">
+              {historySaved ? "Saved" : "Save to history"}
+            </span>
+          </div>
+        )}
       </div>
 
       <div
@@ -221,45 +197,6 @@ export default function Result({
         )}
       </div>
     </section>
-  );
-}
-
-function PipelineStage({
-  label,
-  name,
-  tier,
-  runtime,
-  fallback,
-}: {
-  label: string;
-  name: string;
-  tier: string;
-  runtime: string;
-  fallback: boolean;
-}) {
-  return (
-    <div className="bg-neutral-950/95 px-4 py-3">
-      <div className="flex items-center justify-between gap-3">
-        <span className="text-[9px] font-medium uppercase tracking-[0.18em] text-neutral-600">
-          {label}
-        </span>
-        <span
-          className={
-            fallback
-              ? "rounded-full bg-amber-400/10 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[0.14em] text-amber-300"
-              : "rounded-full bg-emerald-400/10 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[0.14em] text-emerald-300"
-          }
-        >
-          {fallback ? "Fallback used" : "Primary"}
-        </span>
-      </div>
-      <p className="mt-1.5 truncate text-xs font-medium text-neutral-200">
-        {name}
-      </p>
-      <p className="mt-0.5 text-[10px] text-neutral-600">
-        {tier} · {runtime}
-      </p>
-    </div>
   );
 }
 
@@ -303,7 +240,7 @@ function ScanIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-7 w-7"
+      className="h-5 w-5"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.8"
