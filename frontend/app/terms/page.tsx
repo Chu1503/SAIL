@@ -4,7 +4,7 @@ export const metadata = {
 
 export default function Terms() {
   return (
-    <main className="mx-auto min-h-dvh max-w-2xl bg-black px-6 py-12 text-neutral-300">
+    <main className="selectable-text mx-auto min-h-dvh max-w-2xl bg-black px-6 py-12 text-neutral-300">
       <h1 className="text-2xl font-semibold text-white">
         Terms of Use &amp; Medical Disclaimer
       </h1>

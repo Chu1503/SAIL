@@ -15,6 +15,19 @@ body {
     Arial,
     Helvetica,
     sans-serif;
+  /* This is an app, not a text-reading site -- long-pressing a button or
+     label shouldn't pop up Android/iOS's text-selection handles and
+     copy toolbar. Re-enabled explicitly on /privacy and /terms, since
+     that's actual prose people may want to select. */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.selectable-text {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
 }
 
 button,

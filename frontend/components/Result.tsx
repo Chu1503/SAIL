@@ -73,7 +73,7 @@ export default function Result({
 
   return (
     <section className="flex flex-1 flex-col bg-black px-1">
-      <header className="pb-3">
+      <header className="pb-5">
         <button
           type="button"
           onClick={onHome}
@@ -84,7 +84,7 @@ export default function Result({
         </button>
       </header>
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <figure>
           <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-neutral-950">
             <img
@@ -94,7 +94,7 @@ export default function Result({
             />
           </div>
 
-          <figcaption className="mt-2 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-600">
+          <figcaption className="mt-3 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-600">
             Input
           </figcaption>
         </figure>
@@ -108,13 +108,13 @@ export default function Result({
             />
           </div>
 
-          <figcaption className="mt-2 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-emerald-400">
+          <figcaption className="mt-3 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-emerald-400">
             {showGraph ? "Vein graph" : "Vein overlay"}
           </figcaption>
         </figure>
       </div>
 
-      <div className="flex items-center justify-center gap-4 pt-4">
+      <div className="flex items-center justify-center gap-4 pt-6">
         <div className="flex flex-col items-center gap-1.5">
           <button
             type="button"
